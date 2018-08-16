@@ -1,5 +1,5 @@
 # TestRail Searcher
-Windows Form aplication for Full text searching in TestRail. 
+Windows Form application for Full text searching in TestRail. 
 
 Compatible with TestRail *5.5.0.3735* and lower.
 
