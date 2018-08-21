@@ -164,7 +164,8 @@
             this.testCasesDataGridView.RowTemplate.Height = 24;
             this.testCasesDataGridView.Size = new System.Drawing.Size(979, 288);
             this.testCasesDataGridView.TabIndex = 11;
-            this.testCasesDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.testCasesDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.testCasesDataGridView1_CellContentClick);
+            this.testCasesDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.testCasesDataGridView_CellContentDoubleClick);
             // 
             // label3
             // 

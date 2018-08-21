@@ -57,7 +57,18 @@ namespace TestRail_Searcher
         public string GetSectionName(int sectionId)
         {
             JObject c = (JObject)this._client.SendGet("get_section/" + sectionId);
-            return c["name"].ToString();
+            var sectionName =  c["name"].ToString();
+            string parentId = GetParentId(sectionId);
+            if (parentId == "")
+            {
+                return sectionName;
+            }
+            else
+            {
+                c = (JObject)this._client.SendGet("get_section/" + Convert.ToInt32(parentId));
+                var parentName = c["name"].ToString();
+                return parentName + " › " + sectionName;
+            }
         }
 
         public string GetParentId(int sectionId)

@@ -274,7 +274,7 @@ namespace TestRail_Searcher
                 testCasesDataGridView.Rows.Clear();
             });
             testCasesDataGridView.Invoke((MethodInvoker)delegate {
-                foundTestCasesCountLbl.Text = "0";
+                foundTestCasesCountLbl.Text = "searching...";
             });
             var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
             var result = dbs.GetAllTestCasesByKeyword(this.Suites, searchTxt.Text);
@@ -369,7 +369,16 @@ namespace TestRail_Searcher
             form.Show();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void testCasesDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            {
+                object value = testCasesDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                Clipboard.SetText(value.ToString());
+            }
+        }
+
+        private void testCasesDataGridView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1 && e.ColumnIndex == 2)
             {
