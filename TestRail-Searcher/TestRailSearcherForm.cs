@@ -14,6 +14,7 @@ namespace TestRail_Searcher
         string _user;
         string _password;
         TestRailReader _trr;
+        bool _youTrackTestCases = false;
 
         protected int ProjectId = -1;
         protected List<string> Suites = new List<string>();
@@ -277,7 +278,7 @@ namespace TestRail_Searcher
                 foundTestCasesCountLbl.Text = "searching...";
             });
             var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
-            var result = dbs.GetAllTestCasesByKeyword(this.Suites, searchTxt.Text);
+            var result = dbs.GetAllTestCasesByKeyword(this.Suites, searchTxt.Text, _youTrackTestCases);
             foreach (var testCase in result)
             {
                 object[] row = {
@@ -391,6 +392,11 @@ namespace TestRail_Searcher
                 var url = this._server + "index.php?/cases/view/" + value;
                 System.Diagnostics.Process.Start(url);
             }
+        }
+
+        private void ytChbx_CheckedChanged(object sender, EventArgs e)
+        {
+            _youTrackTestCases = !_youTrackTestCases;
         }
     }
 }

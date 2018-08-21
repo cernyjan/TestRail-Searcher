@@ -76,19 +76,29 @@ namespace TestRail_Searcher
             return result.UpdatedOn < updatedOn;
         }
 
-        public IEnumerable<TestCase> GetAllTestCasesByKeyword(List<string> suites, string keyword)
+        public IEnumerable<TestCase> GetAllTestCasesByKeyword(List<string> suites, string keyword, bool yt = false)
         {
-            keyword = keyword.ToLower();
-            var results =  this._testCasecollection.Find(x => (suites.IndexOf(x.SuiteId.ToString()) > -1) && (x.Id.ToString().Contains(keyword) 
-            || x.CustomCustomOriginalId.Contains(keyword)
-            || x.Title.Contains(keyword)
-            || x.CustomNotes.Contains(keyword)
-            || x.CustomPreconds.Contains(keyword)
-            || x.CustomSteps.Contains(keyword)
-            || x.CustomExpecteds.Contains(keyword)
-            || x.CustomCustomComments.Contains(keyword)
-            ));
-            return results;
+            if (yt)
+            {
+                List<string> keywords = keyword.Split(',').ToList().ConvertAll(d => d.ToLower().Trim());
+                var results = this._testCasecollection.Find(testCase =>
+                    (suites.IndexOf(testCase.SuiteId.ToString()) > -1) && keywords.Any(k => testCase.CustomCustomOriginalId.Contains(k)));
+                return results;
+            }
+            else
+            {
+                keyword = keyword.ToLower();
+                var results =  this._testCasecollection.Find(x => (suites.IndexOf(x.SuiteId.ToString()) > -1) && (x.Id.ToString().Contains(keyword) 
+                || x.CustomCustomOriginalId.Contains(keyword)
+                || x.Title.Contains(keyword)
+                || x.CustomNotes.Contains(keyword)
+                || x.CustomPreconds.Contains(keyword)
+                || x.CustomSteps.Contains(keyword)
+                || x.CustomExpecteds.Contains(keyword)
+                || x.CustomCustomComments.Contains(keyword)
+                ));
+                return results;
+            }
         }
 
         public int GetTestCasesCount(List<string> suites)

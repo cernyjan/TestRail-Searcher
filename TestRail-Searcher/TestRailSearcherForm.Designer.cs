@@ -188,12 +188,13 @@
             // ytChbx
             // 
             this.ytChbx.AutoSize = true;
-            this.ytChbx.Location = new System.Drawing.Point(641, 224);
+            this.ytChbx.Location = new System.Drawing.Point(609, 224);
             this.ytChbx.Name = "ytChbx";
-            this.ytChbx.Size = new System.Drawing.Size(166, 21);
+            this.ytChbx.Size = new System.Drawing.Size(198, 21);
             this.ytChbx.TabIndex = 15;
-            this.ytChbx.Text = "YouTrack Test Cases";
+            this.ytChbx.Text = "Test Cases from YouTrack";
             this.ytChbx.UseVisualStyleBackColor = true;
+            this.ytChbx.CheckedChanged += new System.EventHandler(this.ytChbx_CheckedChanged);
             // 
             // label4
             // 
