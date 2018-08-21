@@ -41,6 +41,9 @@
             this.testCasesDataGridView = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
             this.testCasesCountLbl = new System.Windows.Forms.Label();
+            this.ytChbx = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.foundTestCasesCountLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picLoader)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.testCasesDataGridView)).BeginInit();
             this.SuspendLayout();
@@ -101,7 +104,7 @@
             this.suitesChckListBox.Location = new System.Drawing.Point(15, 36);
             this.suitesChckListBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.suitesChckListBox.Name = "suitesChckListBox";
-            this.suitesChckListBox.Size = new System.Drawing.Size(755, 106);
+            this.suitesChckListBox.Size = new System.Drawing.Size(979, 106);
             this.suitesChckListBox.TabIndex = 5;
             this.suitesChckListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.suitesChckListBox_ItemCheck);
             // 
@@ -120,7 +123,7 @@
             // 
             this.picLoader.BackColor = System.Drawing.Color.Transparent;
             this.picLoader.Image = global::TestRail_Searcher.Properties.Resources.Loadingsome;
-            this.picLoader.Location = new System.Drawing.Point(588, 159);
+            this.picLoader.Location = new System.Drawing.Point(813, 155);
             this.picLoader.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.picLoader.Name = "picLoader";
             this.picLoader.Size = new System.Drawing.Size(181, 95);
@@ -130,7 +133,7 @@
             // 
             // logoutBtn
             // 
-            this.logoutBtn.Location = new System.Drawing.Point(693, 2);
+            this.logoutBtn.Location = new System.Drawing.Point(919, 6);
             this.logoutBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.logoutBtn.Name = "logoutBtn";
             this.logoutBtn.Size = new System.Drawing.Size(75, 28);
@@ -142,7 +145,7 @@
             // loginLabel
             // 
             this.loginLabel.AutoSize = true;
-            this.loginLabel.Location = new System.Drawing.Point(501, 9);
+            this.loginLabel.Location = new System.Drawing.Point(582, 9);
             this.loginLabel.Name = "loginLabel";
             this.loginLabel.Size = new System.Drawing.Size(0, 17);
             this.loginLabel.TabIndex = 10;
@@ -159,7 +162,7 @@
             this.testCasesDataGridView.Name = "testCasesDataGridView";
             this.testCasesDataGridView.ReadOnly = true;
             this.testCasesDataGridView.RowTemplate.Height = 24;
-            this.testCasesDataGridView.Size = new System.Drawing.Size(755, 288);
+            this.testCasesDataGridView.Size = new System.Drawing.Size(979, 288);
             this.testCasesDataGridView.TabIndex = 11;
             this.testCasesDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -181,11 +184,42 @@
             this.testCasesCountLbl.TabIndex = 14;
             this.testCasesCountLbl.Text = "0";
             // 
+            // ytChbx
+            // 
+            this.ytChbx.AutoSize = true;
+            this.ytChbx.Location = new System.Drawing.Point(641, 224);
+            this.ytChbx.Name = "ytChbx";
+            this.ytChbx.Size = new System.Drawing.Size(166, 21);
+            this.ytChbx.TabIndex = 15;
+            this.ytChbx.Text = "YouTrack Test Cases";
+            this.ytChbx.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(39, 188);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(127, 17);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "Found Test Cases:";
+            // 
+            // foundTestCasesCountLbl
+            // 
+            this.foundTestCasesCountLbl.AutoSize = true;
+            this.foundTestCasesCountLbl.Location = new System.Drawing.Point(172, 188);
+            this.foundTestCasesCountLbl.Name = "foundTestCasesCountLbl";
+            this.foundTestCasesCountLbl.Size = new System.Drawing.Size(16, 17);
+            this.foundTestCasesCountLbl.TabIndex = 17;
+            this.foundTestCasesCountLbl.Text = "0";
+            // 
             // TestRailSearcherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(781, 553);
+            this.ClientSize = new System.Drawing.Size(1006, 553);
+            this.Controls.Add(this.foundTestCasesCountLbl);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.ytChbx);
             this.Controls.Add(this.testCasesCountLbl);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.testCasesDataGridView);
@@ -228,6 +262,9 @@
         private System.Windows.Forms.DataGridView testCasesDataGridView;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label testCasesCountLbl;
+        private System.Windows.Forms.CheckBox ytChbx;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label foundTestCasesCountLbl;
     }
 }
 

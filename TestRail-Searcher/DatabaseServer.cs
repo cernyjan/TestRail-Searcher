@@ -24,6 +24,8 @@ namespace TestRail_Searcher
                 case "TestCases":
                     this._testCasecollection = _database.GetCollection<TestCase>(collectionName);
                     this._testCasecollection.EnsureIndex(x => x.Id, true);
+                    this._testCasecollection.EnsureIndex(x => x.CustomCustomOriginalId, "LOWER($.CustomCustomOriginalId)");
+                    this._testCasecollection.EnsureIndex(x => x.Title, "LOWER($.Title)");
                     break;
                 default:
                     throw new NotImplementedException

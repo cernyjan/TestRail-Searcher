@@ -65,6 +65,7 @@ namespace TestRail_Searcher
             }
 
             testCasesDataGridView.Columns.Add("Suite", "Suite");
+            testCasesDataGridView.Columns.Add("Category", "Category");
             testCasesDataGridView.Columns.Add("ID", "ID");
             testCasesDataGridView.Columns.Add("Original ID", "Original ID");
             testCasesDataGridView.Columns.Add("Title", "Title");
@@ -181,8 +182,8 @@ namespace TestRail_Searcher
                 var testCases = _trr.GetTestCases(ProjectId, Int32.Parse(suite));
                 foreach (var testCase in testCases)
                 {
-                    var originalId = testCase["custom_custom_original_id"].ToString().ToLower();
-                    var title = testCase["title"].ToString().ToLower();
+                    var originalId = testCase["custom_custom_original_id"].ToString();
+                    var title = testCase["title"].ToString();
                     var notes = testCase["custom_notes"].ToString().ToLower();
                     var preconds = testCase["custom_preconds"].ToString().ToLower();
                     var comments = testCase["custom_custom_comments"].ToString().ToLower();
@@ -272,12 +273,16 @@ namespace TestRail_Searcher
             testCasesDataGridView.Invoke((MethodInvoker)delegate {
                 testCasesDataGridView.Rows.Clear();
             });
+            testCasesDataGridView.Invoke((MethodInvoker)delegate {
+                foundTestCasesCountLbl.Text = "0";
+            });
             var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
             var result = dbs.GetAllTestCasesByKeyword(this.Suites, searchTxt.Text);
             foreach (var testCase in result)
             {
                 object[] row = {
                     _trr.GetSuiteName(testCase.SuiteId),
+                    _trr.GetSectionName(testCase.SectionId),
                     testCase.Id.ToString(),
                     testCase.CustomCustomOriginalId,
                     testCase.Title };
@@ -286,6 +291,9 @@ namespace TestRail_Searcher
                     this.testCasesDataGridView.Columns[testCasesDataGridView.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 });
             }
+            testCasesDataGridView.Invoke((MethodInvoker)delegate {
+                foundTestCasesCountLbl.Text = testCasesDataGridView.Rows.Count.ToString();
+            });
             SetLoading(false);
         }
 
@@ -363,7 +371,7 @@ namespace TestRail_Searcher
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > -1 && e.ColumnIndex == 1)
+            if (e.RowIndex > -1 && e.ColumnIndex == 2)
             {
                 object value = testCasesDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                 //e.g. https://testrail.quadient.group/index.php?/cases/view/860801
