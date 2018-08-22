@@ -181,10 +181,15 @@ namespace TestRail_Searcher
             foreach (string suite in Suites)
             {
                 var testCases = _trr.GetTestCases(ProjectId, Int32.Parse(suite));
+                var testCasesCount = 0;
                 foreach (var testCase in testCases)
                 {
                     var originalId = testCase["custom_custom_original_id"].ToString();
                     var title = testCase["title"].ToString();
+                    var sectionId = (int) testCase["section_id"];
+                    var sectionName = _trr.GetSectionName(sectionId);
+                    var suiteId = (int) testCase["suite_id"];
+                    var suiteName = _trr.GetSuiteName(suiteId);
                     var notes = testCase["custom_notes"].ToString().ToLower();
                     var preconds = testCase["custom_preconds"].ToString().ToLower();
                     var comments = testCase["custom_custom_comments"].ToString().ToLower();
@@ -206,9 +211,11 @@ namespace TestRail_Searcher
                         (int)testCase["id"],
                         originalId,
                         title,
-                        (int)testCase["section_id"],
+                        sectionId,
+                        sectionName,
                         (int?)testCase["milestone_id"],
-                        (int)testCase["suite_id"],
+                        suiteId,
+                        suiteName,
                         notes,
                         preconds,
                         stepsInString,
@@ -235,6 +242,9 @@ namespace TestRail_Searcher
                             Console.WriteLine(e.Message);
                         }
                     }
+                    testCasesCountLbl.Invoke((MethodInvoker)delegate {
+                        testCasesCountLbl.Text = (++testCasesCount).ToString();
+                    });
                 }
             }
             SetLoading(false);
@@ -282,8 +292,8 @@ namespace TestRail_Searcher
             foreach (var testCase in result)
             {
                 object[] row = {
-                    _trr.GetSuiteName(testCase.SuiteId),
-                    _trr.GetSectionName(testCase.SectionId),
+                    testCase.SuiteName,
+                    testCase.SectionName,
                     testCase.Id.ToString(),
                     testCase.CustomCustomOriginalId,
                     testCase.Title };

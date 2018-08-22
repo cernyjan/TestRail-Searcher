@@ -58,7 +58,7 @@ namespace TestRail_Searcher
         {
             JObject c = (JObject)this._client.SendGet("get_section/" + sectionId);
             var sectionName =  c["name"].ToString();
-            string parentId = GetParentId(sectionId);
+            string parentId = c["parent_id"].ToString();
             if (parentId == "")
             {
                 return sectionName;
@@ -69,12 +69,6 @@ namespace TestRail_Searcher
                 var parentName = c["name"].ToString();
                 return parentName + " › " + sectionName;
             }
-        }
-
-        public string GetParentId(int sectionId)
-        {
-            JObject c = (JObject)this._client.SendGet("get_section/" + sectionId);
-            return c["parent_id"].ToString();
         }
     }
 }
