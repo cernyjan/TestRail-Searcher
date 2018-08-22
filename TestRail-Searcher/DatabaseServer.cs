@@ -27,6 +27,8 @@ namespace TestRail_Searcher
                     this._testCasecollection.EnsureIndex(x => x.Id, true);
                     this._testCasecollection.EnsureIndex(x => x.CustomCustomOriginalId, "LOWER($.CustomCustomOriginalId)");
                     this._testCasecollection.EnsureIndex(x => x.Title, "LOWER($.Title)");
+                    this._testCasecollection.EnsureIndex(x => x.SectionName, "LOWER($.SectionName)");
+                    this._testCasecollection.EnsureIndex(x => x.SuiteName, "LOWER($.SuiteName)");
                     break;
                 default:
                     throw new NotImplementedException
@@ -96,6 +98,8 @@ namespace TestRail_Searcher
                         (x.Id.ToString().Contains(keyword)
                         || x.CustomCustomOriginalId.Contains(keyword)
                         || x.Title.Contains(keyword)
+                        || x.SuiteName.Contains(keyword)
+                        || x.SectionName.Contains(keyword)
                         || x.CustomNotes.Contains(keyword)
                         || x.CustomPreconds.Contains(keyword)
                         || x.CustomSteps.Contains(keyword)
@@ -112,6 +116,8 @@ namespace TestRail_Searcher
                         (IdContainsKeyword(keywords, testCase)
                         || keywords.Any(k => testCase.CustomCustomOriginalId.Contains(k))
                         || keywords.Any(k => testCase.Title.Contains(k))
+                        || keywords.Any(k => testCase.SuiteName.Contains(k))
+                        || keywords.Any(k => testCase.SectionName.Contains(k))
                         || keywords.Any(k => testCase.CustomNotes.Contains(k))
                         || keywords.Any(k => testCase.CustomPreconds.Contains(k))
                         || keywords.Any(k => testCase.CustomSteps.Contains(k))
