@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using LiteDB;
 
 namespace TestRail_Searcher
@@ -85,20 +86,49 @@ namespace TestRail_Searcher
                     (suites.IndexOf(testCase.SuiteId.ToString()) > -1) && keywords.Any(k => testCase.CustomCustomOriginalId.Contains(k)));
                 return results;
             }
-            else
+            if (keyword.Length > 2)
             {
-                keyword = keyword.ToLower();
-                var results =  this._testCasecollection.Find(x => (suites.IndexOf(x.SuiteId.ToString()) > -1) && (x.Id.ToString().Contains(keyword) 
-                || x.CustomCustomOriginalId.Contains(keyword)
-                || x.Title.Contains(keyword)
-                || x.CustomNotes.Contains(keyword)
-                || x.CustomPreconds.Contains(keyword)
-                || x.CustomSteps.Contains(keyword)
-                || x.CustomExpecteds.Contains(keyword)
-                || x.CustomCustomComments.Contains(keyword)
-                ));
-                return results;
+                if (keyword[0].Equals('"') && keyword[keyword.Length - 1].Equals('"'))
+                {
+                    keyword = keyword.Trim('"').ToLower();
+                    var results = this._testCasecollection.Find(x => 
+                        (suites.IndexOf(x.SuiteId.ToString()) > -1) && 
+                        (x.Id.ToString().Contains(keyword)
+                        || x.CustomCustomOriginalId.Contains(keyword)
+                        || x.Title.Contains(keyword)
+                        || x.CustomNotes.Contains(keyword)
+                        || x.CustomPreconds.Contains(keyword)
+                        || x.CustomSteps.Contains(keyword)
+                        || x.CustomExpecteds.Contains(keyword)
+                        || x.CustomCustomComments.Contains(keyword)
+                    ));
+                    return results;
+                }
+                else
+                {
+                    List<string> keywords = keyword.Split(' ').ToList().ConvertAll(d => d.ToLower().Trim());
+                    var results = this._testCasecollection.Find(testCase => 
+                        (suites.IndexOf(testCase.SuiteId.ToString()) > -1) && 
+                        (IdContainsKeyword(keywords, testCase)
+                        || keywords.Any(k => testCase.CustomCustomOriginalId.Contains(k))
+                        || keywords.Any(k => testCase.Title.Contains(k))
+                        || keywords.Any(k => testCase.CustomNotes.Contains(k))
+                        || keywords.Any(k => testCase.CustomPreconds.Contains(k))
+                        || keywords.Any(k => testCase.CustomSteps.Contains(k))
+                        || keywords.Any(k => testCase.CustomExpecteds.Contains(k))
+                        || keywords.Any(k => testCase.CustomCustomComments.Contains(k))
+                    ));
+                    return results;
+                }
             }
+            MessageBox.Show("Put at least 3 characters (including quotation marks for exact search).");
+            return new List<TestCase>();
+        }
+
+        static bool IdContainsKeyword(List<string> keywords, TestCase testCase)
+        {
+            var tcid = testCase.Id.ToString();
+            return keywords.Any(k => tcid.Contains(k));
         }
 
         public int GetTestCasesCount(List<string> suites)
