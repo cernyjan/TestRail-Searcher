@@ -245,7 +245,12 @@ namespace TestRail_Searcher
                     var suiteName = GetSuiteName(suiteId);
                     var notes = testCase["custom_notes"].ToString().ToLower();
                     var preconds = testCase["custom_preconds"].ToString().ToLower();
-                    var comments = testCase["custom_custom_comments"].ToString().ToLower();
+                    var jTokenComments = testCase["custom_custom_comments"];
+                    var comments = "";
+                    if (jTokenComments != null)
+                    {
+                        comments = jTokenComments.ToString().ToLower();
+                    }
                     var steps = new List<string>();
                     var expecteds = new List<string>();
                     foreach (var step in testCase["custom_steps_separated"])
