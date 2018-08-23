@@ -73,6 +73,12 @@ namespace TestRail_Searcher
             }
         }
 
+        public bool TestCaseExists(int id)
+        {
+            var result = this._testCasecollection.FindById(id);
+            return result != null;
+        }
+
         public bool IsTestCaseUpdatable(int id, int updatedOn)
         {
             var result = this._testCasecollection.FindById(id);

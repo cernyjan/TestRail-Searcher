@@ -53,22 +53,10 @@ namespace TestRail_Searcher
             JArray c = (JArray)this._client.SendGet("get_cases/" + projectId + "&suite_id=" + suiteId);
             return c;
         }
-
-        public string GetSectionName(int sectionId)
+        public JArray GetSections(int projectId, int suiteId)
         {
-            JObject c = (JObject)this._client.SendGet("get_section/" + sectionId);
-            var sectionName =  c["name"].ToString();
-            string parentId = c["parent_id"].ToString();
-            if (parentId == "")
-            {
-                return sectionName;
-            }
-            else
-            {
-                c = (JObject)this._client.SendGet("get_section/" + Convert.ToInt32(parentId));
-                var parentName = c["name"].ToString();
-                return parentName + " › " + sectionName;
-            }
+            JArray c = (JArray)this._client.SendGet("get_sections/" + projectId + "&suite_id=" + suiteId);
+            return c;
         }
     }
 }

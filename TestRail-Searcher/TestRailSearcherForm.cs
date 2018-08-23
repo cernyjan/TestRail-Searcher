@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TestRail_Searcher
 {
     public partial class TestRailSearcherForm : Form
     {
+        int Threads = 8;
         string DatabaseFilePath = @"Database.db";
         string AdminCollectionName = "Administrator";
         string TestCasesCollectionName = "TestCases";
@@ -17,8 +21,10 @@ namespace TestRail_Searcher
         bool _youTrackTestCases = false;
 
         protected int ProjectId = -1;
-        protected List<string> Suites = new List<string>();
-        
+        protected List<string> SelectedSuites = new List<string>();
+        protected Dictionary<int, string> Suites = new Dictionary<int, string>();
+        protected Dictionary<int, List<string>> Sections = new Dictionary<int, List<string>>();
+
         public TestRailSearcherForm()
         {
             InitializeComponent();
@@ -56,10 +62,13 @@ namespace TestRail_Searcher
             var index = 0;
             foreach (var projectsCmbItem in projectsCmb.Items)
             {
-                if (((ComboboxItem)projectsCmbItem).Value.ToString().Equals(admin.ProjectId.ToString()))
+                if (((ComboboxItem) projectsCmbItem).Value.ToString().Equals(admin.ProjectId.ToString()))
                 {
                     projectsCmb.SelectedIndex = index;
+                    SetLoading(true);
                     FillSuites();
+                    GetSections();
+                    SetLoading(false);
                     break;
                 }
                 index++;
@@ -85,18 +94,20 @@ namespace TestRail_Searcher
 
         private void FillSuites()
         {
+            SelectedSuites.Clear();
             Suites.Clear();
             testCasesCountLbl.Text = "0";
             if (projectsCmb.SelectedItem != null)
-                ProjectId = Int32.Parse(((ComboboxItem)projectsCmb.SelectedItem).Value.ToString());
+                ProjectId = Int32.Parse(((ComboboxItem) projectsCmb.SelectedItem).Value.ToString());
             var suites = _trr.GetSuites(ProjectId);
             suitesChckListBox.Items.Clear();
             foreach (var suite in suites)
             {
                 ComboboxItem item = new ComboboxItem();
-                item.Text = (string)suite["name"];
+                item.Text = (string) suite["name"];
                 item.Value = suite["id"];
                 suitesChckListBox.Items.Add(item);
+                Suites.Add((int) suite["id"], (string) suite["name"]);
             }
             var dbs = new DatabaseServer(DatabaseFilePath, AdminCollectionName);
             var admin = dbs.GetAdmin();
@@ -104,9 +115,28 @@ namespace TestRail_Searcher
             dbs.UpdateDocument(admin);
         }
 
+        private void GetSections()
+        {
+            Sections.Clear();
+            if (projectsCmb.SelectedItem != null)
+                ProjectId = Int32.Parse(((ComboboxItem) projectsCmb.SelectedItem).Value.ToString());
+            foreach (var suite in Suites)
+            {
+                var sections = _trr.GetSections(ProjectId, suite.Key);
+                foreach (var section in sections)
+                {
+                    Sections.Add((int) section["id"],
+                        new List<string> {(string) section["name"], (string) section["parent_id"]});
+                }
+            }
+        }
+
         private void projectCmb_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            SetLoading(true);
             FillSuites();
+            GetSections();
+            SetLoading(false);
         }
 
         private void suitesChckListBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -114,20 +144,20 @@ namespace TestRail_Searcher
             if (sender != null && e != null)
             {
                 // Get the checkListBox selected time and it's CheckState
-                CheckedListBox checkListBox = (CheckedListBox)sender;
+                CheckedListBox checkListBox = (CheckedListBox) sender;
                 string selectedItem = (checkListBox.SelectedItem as ComboboxItem)?.Value.ToString();
 
                 // If curent value was checked, then remove from list
                 if (e.CurrentValue == CheckState.Checked &&
-                    Suites.Contains(selectedItem))
+                    SelectedSuites.Contains(selectedItem))
                 {
-                    Suites.Remove(selectedItem);
+                    SelectedSuites.Remove(selectedItem);
                 }
                 // else if new value is checked, then add to list
                 else if (e.NewValue == CheckState.Checked &&
-                         !Suites.Contains(selectedItem))
+                         !SelectedSuites.Contains(selectedItem))
                 {
-                    Suites.Insert(0, selectedItem);
+                    SelectedSuites.Insert(0, selectedItem);
                 }
 
                 try
@@ -137,7 +167,7 @@ namespace TestRail_Searcher
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    LogException(ex);
                 }
             }
         }
@@ -146,12 +176,13 @@ namespace TestRail_Searcher
         {
             if (displayLoader)
             {
-                this.Invoke((MethodInvoker)delegate
+                this.Invoke((MethodInvoker) delegate
                 {
                     picLoader.Visible = true;
                     //this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
                 });
-                cleanBtn.Invoke((MethodInvoker)delegate {
+                cleanBtn.Invoke((MethodInvoker) delegate
+                {
                     cleanBtn.Enabled = false;
                     updateBtn.Enabled = false;
                     projectsCmb.Enabled = false;
@@ -160,12 +191,13 @@ namespace TestRail_Searcher
             }
             else
             {
-                this.Invoke((MethodInvoker)delegate
+                this.Invoke((MethodInvoker) delegate
                 {
                     picLoader.Visible = false;
                     //this.Cursor = System.Windows.Forms.Cursors.Default;
                 });
-                cleanBtn.Invoke((MethodInvoker)delegate {
+                cleanBtn.Invoke((MethodInvoker) delegate
+                {
                     cleanBtn.Enabled = true;
                     updateBtn.Enabled = true;
                     projectsCmb.Enabled = true;
@@ -174,22 +206,43 @@ namespace TestRail_Searcher
             }
         }
 
+        private string GetSuiteName(int suiteId)
+        {
+            return Suites[suiteId];
+        }
+
+        private string GetSectionName(int sectionId)
+        {
+            var sectionName = Sections[sectionId][0];
+            string parentId = Sections[sectionId][1];
+            if (string.IsNullOrEmpty(parentId))
+            {
+                return sectionName;
+            }
+            else
+            {
+                var parentName = Sections[Int32.Parse(parentId)][0];
+                return parentName + " › " + sectionName;
+            }
+        }
+
         private void UpdateDatabase()
         {
             SetLoading(true);
-
-            foreach (string suite in Suites)
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var testCasesCount = 0;
+            Parallel.ForEach(SelectedSuites, new ParallelOptions {MaxDegreeOfParallelism = Threads}, suite =>
             {
                 var testCases = _trr.GetTestCases(ProjectId, Int32.Parse(suite));
-                var testCasesCount = 0;
-                foreach (var testCase in testCases)
+                Parallel.ForEach(testCases, new ParallelOptions {MaxDegreeOfParallelism = Threads}, testCase =>
                 {
                     var originalId = testCase["custom_custom_original_id"].ToString();
                     var title = testCase["title"].ToString();
                     var sectionId = (int) testCase["section_id"];
-                    var sectionName = _trr.GetSectionName(sectionId);
+                    var sectionName = GetSectionName(sectionId);
                     var suiteId = (int) testCase["suite_id"];
-                    var suiteName = _trr.GetSuiteName(suiteId);
+                    var suiteName = GetSuiteName(suiteId);
                     var notes = testCase["custom_notes"].ToString().ToLower();
                     var preconds = testCase["custom_preconds"].ToString().ToLower();
                     var comments = testCase["custom_custom_comments"].ToString().ToLower();
@@ -197,8 +250,8 @@ namespace TestRail_Searcher
                     var expecteds = new List<string>();
                     foreach (var step in testCase["custom_steps_separated"])
                     {
-                        steps.Add((string)step["content"]);
-                        expecteds.Add((string)step["expected"]);
+                        steps.Add((string) step["content"]);
+                        expecteds.Add((string) step["expected"]);
                     }
                     var stepsInString = String.Join(", ", steps.ToArray()).ToLower();
                     var expectedsInString = String.Join(", ", expecteds.ToArray()).ToLower();
@@ -208,12 +261,12 @@ namespace TestRail_Searcher
                     // Create your new Test Case instance
                     var testCaseDocument = new TestCase();
                     testCaseDocument.SetProperties(
-                        (int)testCase["id"],
+                        (int) testCase["id"],
                         originalId,
                         title,
                         sectionId,
                         sectionName,
-                        (int?)testCase["milestone_id"],
+                        (int?) testCase["milestone_id"],
                         suiteId,
                         suiteName,
                         notes,
@@ -221,16 +274,12 @@ namespace TestRail_Searcher
                         stepsInString,
                         expectedsInString,
                         comments,
-                        (int)testCase["updated_on"]
+                        (int) testCase["updated_on"]
                     );
 
                     try
                     {
-                        dbs.InsertDocument(testCaseDocument);
-                    }
-                    catch (Exception e)
-                    {
-                        if (e.Message.Contains("Cannot insert duplicate key in unique index '_id'"))
+                        if (dbs.TestCaseExists(testCaseDocument.Id))
                         {
                             if (dbs.IsTestCaseUpdatable(testCaseDocument.Id, testCaseDocument.UpdatedOn))
                             {
@@ -239,14 +288,23 @@ namespace TestRail_Searcher
                         }
                         else
                         {
-                            Console.WriteLine(e.Message);
+                            dbs.InsertDocument(testCaseDocument);
                         }
                     }
-                    testCasesCountLbl.Invoke((MethodInvoker)delegate {
+                    catch (Exception ex)
+                    {
+                        LogException(ex);
+                    }
+                    testCasesCountLbl.Invoke((MethodInvoker) delegate
+                    {
                         testCasesCountLbl.Text = (++testCasesCount).ToString();
                     });
-                }
-            }
+                });
+            });
+
+            sw.Stop();
+            Console.WriteLine("Update took: " + sw.Elapsed.ToString("ss") + "s");
+
             SetLoading(false);
 
             try
@@ -256,7 +314,7 @@ namespace TestRail_Searcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LogException(ex);
             }
         }
 
@@ -274,37 +332,45 @@ namespace TestRail_Searcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LogException(ex);
             }
         }
 
         private void SearchTestCases()
         {
             SetLoading(true);
-            testCasesDataGridView.Invoke((MethodInvoker)delegate {
+            testCasesDataGridView.Invoke((MethodInvoker) delegate
+            {
                 testCasesDataGridView.Rows.Clear();
             });
-            testCasesDataGridView.Invoke((MethodInvoker)delegate {
+            testCasesDataGridView.Invoke((MethodInvoker) delegate
+            {
                 foundTestCasesCountLbl.Text = "searching...";
             });
             var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
-            var result = dbs.GetAllTestCasesByKeyword(this.Suites, searchTxt.Text, _youTrackTestCases);
+            var result = dbs.GetAllTestCasesByKeyword(this.SelectedSuites, searchTxt.Text, _youTrackTestCases);
             foreach (var testCase in result)
             {
-                object[] row = {
-                    testCase.SuiteName,
+                object[] row =
+                {
+                    Suites[testCase.SuiteId],
                     testCase.SectionName,
                     testCase.Id.ToString(),
                     testCase.CustomCustomOriginalId,
-                    testCase.Title };
-                testCasesDataGridView.Invoke((MethodInvoker)delegate {
+                    testCase.Title
+                };
+                testCasesDataGridView.Invoke((MethodInvoker) delegate
+                {
                     testCasesDataGridView.Rows.Add(row);
-                    this.testCasesDataGridView.Columns[testCasesDataGridView.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    this.testCasesDataGridView.Columns[testCasesDataGridView.ColumnCount - 1].AutoSizeMode =
+                        DataGridViewAutoSizeColumnMode.Fill;
                 });
             }
-            testCasesDataGridView.Invoke((MethodInvoker)delegate {
+            testCasesDataGridView.Invoke((MethodInvoker) delegate
+            {
                 foundTestCasesCountLbl.Text = testCasesDataGridView.Rows.Count.ToString();
             });
+
             SetLoading(false);
         }
 
@@ -312,16 +378,18 @@ namespace TestRail_Searcher
         {
             SetLoading(true);
             var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
-            testCasesCountLbl.Invoke((MethodInvoker)delegate {
-                testCasesCountLbl.Text = dbs.GetTestCasesCount(Suites).ToString();
+            testCasesCountLbl.Invoke((MethodInvoker) delegate
+            {
+                testCasesCountLbl.Text = dbs.GetTestCasesCount(SelectedSuites).ToString();
             });
             SetLoading(false);
         }
 
         private void updateBtn_Click(object sender, EventArgs e)
         {
-            if (ProjectId != -1 && Suites.Count > 0)
+            if (ProjectId != -1 && SelectedSuites.Count > 0)
             {
+
                 try
                 {
                     Thread threadInput = new Thread(UpdateDatabase);
@@ -329,7 +397,7 @@ namespace TestRail_Searcher
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    LogException(ex);
                 }
             }
             else
@@ -347,13 +415,14 @@ namespace TestRail_Searcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LogException(ex);
             }
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(searchTxt.Text) && !String.IsNullOrWhiteSpace(searchTxt.Text) && ProjectId != -1 && Suites.Count > 0)
+            if (!String.IsNullOrEmpty(searchTxt.Text) && !String.IsNullOrWhiteSpace(searchTxt.Text) &&
+                ProjectId != -1 && SelectedSuites.Count > 0)
             {
                 try
                 {
@@ -362,14 +431,14 @@ namespace TestRail_Searcher
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    LogException(ex);
                 }
             }
             else
             {
                 MessageBox.Show("Select Project, at least one Suite and put any keyword.");
             }
-            
+
         }
 
         private void logoutBtn_Click(object sender, EventArgs e)
@@ -407,6 +476,30 @@ namespace TestRail_Searcher
         private void ytChbx_CheckedChanged(object sender, EventArgs e)
         {
             _youTrackTestCases = !_youTrackTestCases;
+        }
+
+        private void LogException(Exception e)
+        {
+            var workingDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+            var fileName = DateTime.Now.ToString("yyyy - MM - dd") + "err.log";
+            if (File.Exists(Path.Combine(workingDirectory + fileName)))
+            {
+                using (FileStream fs = new FileStream(Path.Combine(workingDirectory + fileName), FileMode.Append))
+                {
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.Write(e.Message);
+                    sw.Close();
+                }
+            }
+            else
+            {
+                using (FileStream fs = new FileStream(Path.Combine(workingDirectory + fileName), FileMode.OpenOrCreate))
+                {
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.Write(e.Message);
+                    sw.Close();
+                }
+            }
         }
     }
 }
