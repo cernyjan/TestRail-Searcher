@@ -8,8 +8,8 @@ namespace TestRail_Searcher
 {
     class DatabaseServer
     {
-        readonly LiteCollection<Administrator> _administratorcollection;
-        readonly LiteCollection<TestCase> _testCasecollection;
+        readonly LiteCollection<Administrator> _administratorCollection;
+        readonly LiteCollection<TestCase> _testCaseCollection;
         readonly LiteDatabase _database;
 
         public DatabaseServer(string filePath, string collectionName)
@@ -18,17 +18,17 @@ namespace TestRail_Searcher
             switch (collectionName)
             {
                 case "Administrator":
-                    this._administratorcollection = _database.GetCollection<Administrator>(collectionName);
-                    this._administratorcollection.EnsureIndex(x => x.Id, true);
-                    this._administratorcollection.EnsureIndex(x => x.Login, true);
+                    this._administratorCollection = _database.GetCollection<Administrator>(collectionName);
+                    this._administratorCollection.EnsureIndex(x => x.Id, true);
+                    this._administratorCollection.EnsureIndex(x => x.Login, true);
                     break;
                 case "TestCases":
-                    this._testCasecollection = _database.GetCollection<TestCase>(collectionName);
-                    this._testCasecollection.EnsureIndex(x => x.Id, true);
-                    this._testCasecollection.EnsureIndex(x => x.CustomCustomOriginalId, "LOWER($.CustomCustomOriginalId)");
-                    this._testCasecollection.EnsureIndex(x => x.Title, "LOWER($.Title)");
-                    this._testCasecollection.EnsureIndex(x => x.SectionName, "LOWER($.SectionName)");
-                    this._testCasecollection.EnsureIndex(x => x.SuiteName, "LOWER($.SuiteName)");
+                    this._testCaseCollection = _database.GetCollection<TestCase>(collectionName);
+                    this._testCaseCollection.EnsureIndex(x => x.Id, true);
+                    this._testCaseCollection.EnsureIndex(x => x.CustomCustomOriginalId, "LOWER($.CustomCustomOriginalId)");
+                    this._testCaseCollection.EnsureIndex(x => x.Title, "LOWER($.Title)");
+                    this._testCaseCollection.EnsureIndex(x => x.SectionName, "LOWER($.SectionName)");
+                    this._testCaseCollection.EnsureIndex(x => x.SuiteName, "LOWER($.SuiteName)");
                     break;
                 default:
                     throw new NotImplementedException
@@ -46,10 +46,10 @@ namespace TestRail_Searcher
             switch (document.GetType().Name)
             {
                 case "Administrator":
-                    this._administratorcollection.Insert((Administrator)document);
+                    this._administratorCollection.Insert((Administrator)document);
                     break;
                 case "TestCase":
-                    this._testCasecollection.Insert((TestCase)document);
+                    this._testCaseCollection.Insert((TestCase)document);
                     break;
                 default:
                     throw new NotImplementedException
@@ -62,10 +62,10 @@ namespace TestRail_Searcher
             switch (document.GetType().Name)
             {
                 case "Administrator":
-                    this._administratorcollection.Update((Administrator)document);
+                    this._administratorCollection.Update((Administrator)document);
                     break;
                 case "TestCase":
-                    this._testCasecollection.Update((TestCase)document);
+                    this._testCaseCollection.Update((TestCase)document);
                     break;
                 default:
                     throw new NotImplementedException
@@ -73,15 +73,25 @@ namespace TestRail_Searcher
             }
         }
 
-        public bool TestCaseExists(int id)
+        public bool DocumentExists(string collectionName, int id)
         {
-            var result = this._testCasecollection.FindById(id);
-            return result != null;
+            switch (collectionName)
+            {
+                case "Administrator":
+                    var admin = this._administratorCollection.FindById(id);
+                    return admin != null;
+                case "TestCases":
+                    var testCase = this._testCaseCollection.FindById(id);
+                    return testCase != null;
+                default:
+                    throw new NotImplementedException
+                        ("wrong collection name");
+            }
         }
 
         public bool IsTestCaseUpdatable(int id, int updatedOn)
         {
-            var result = this._testCasecollection.FindById(id);
+            var result = this._testCaseCollection.FindById(id);
             return result.UpdatedOn < updatedOn;
         }
 
@@ -90,7 +100,7 @@ namespace TestRail_Searcher
             if (yt)
             {
                 List<string> keywords = keyword.Split(',').ToList().ConvertAll(d => d.ToLower().Trim());
-                var results = this._testCasecollection.Find(testCase =>
+                var results = this._testCaseCollection.Find(testCase =>
                     (suites.IndexOf(testCase.SuiteId.ToString()) > -1) && keywords.Any(k => testCase.CustomCustomOriginalId.Contains(k)));
                 return results;
             }
@@ -99,7 +109,7 @@ namespace TestRail_Searcher
                 if (keyword[0].Equals('"') && keyword[keyword.Length - 1].Equals('"'))
                 {
                     keyword = keyword.Trim('"').ToLower();
-                    var results = this._testCasecollection.Find(x => 
+                    var results = this._testCaseCollection.Find(x => 
                         (suites.IndexOf(x.SuiteId.ToString()) > -1) && 
                         (x.Id.ToString().Contains(keyword)
                         || x.CustomCustomOriginalId.Contains(keyword)
@@ -117,7 +127,7 @@ namespace TestRail_Searcher
                 else
                 {
                     List<string> keywords = keyword.Split(' ').ToList().ConvertAll(d => d.ToLower().Trim());
-                    var results = this._testCasecollection.Find(testCase => 
+                    var results = this._testCaseCollection.Find(testCase => 
                         (suites.IndexOf(testCase.SuiteId.ToString()) > -1) && 
                         (IdContainsKeyword(keywords, testCase)
                         || keywords.Any(k => testCase.CustomCustomOriginalId.Contains(k))
@@ -133,7 +143,7 @@ namespace TestRail_Searcher
                     return results;
                 }
             }
-            MessageBox.Show("Put at least 3 characters (including quotation marks for exact search).");
+            MessageBox.Show(@"Put at least 3 characters (including quotation marks for exact search).");
             return new List<TestCase>();
         }
 
@@ -145,19 +155,19 @@ namespace TestRail_Searcher
 
         public int GetTestCasesCount(List<string> suites)
         {
-            var result = this._testCasecollection.Find(x => suites.IndexOf(x.SuiteId.ToString()) > -1).Count();
+            var result = this._testCaseCollection.Find(x => suites.IndexOf(x.SuiteId.ToString()) > -1).Count();
             return result;
         }
 
         public Administrator GetAdmin()
         {
-            var result = this._administratorcollection.FindOne(x => x.Login != "");
+            var result = this._administratorCollection.FindOne(x => x.Login != "");
             return result;
         }
 
         public IEnumerable<Administrator> GetAllAdmin()
         {
-            var result = this._administratorcollection.Find(x => x.Login != "");
+            var result = this._administratorCollection.Find(x => x.Login != "");
             return result;
         }
     }

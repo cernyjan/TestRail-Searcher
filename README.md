@@ -7,6 +7,11 @@ Comparison between native TestRail search and this tool:
 ![TestRail Searcher](TestRail-Searcher.png)
 
 ## Release Notes
+### v1.0.4.1
+* minor bug fixes
+* added version number into header
+* little design changes
+
 ### v1.0.4.0
 * speed up searching and caching (breaking change) - update the database is needed
 * added found Test Cases count
@@ -16,9 +21,8 @@ Comparison between native TestRail search and this tool:
 * added better searching - exact and contains
 * added support for searching TestCases by Category
 
-
 ### v1.0.3.0
 * bumped version
 
 ## Download tool
-[TestRail Searcher v1.0.4.0](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.4.0)
+[TestRail Searcher v1.0.4.1](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.4.1)

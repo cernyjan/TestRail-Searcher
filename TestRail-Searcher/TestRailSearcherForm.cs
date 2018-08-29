@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -37,8 +36,7 @@ namespace TestRail_Searcher
             {
                 this.Close();
             }
-            loginForm.Close();
-
+            
             this._server = loginForm.serverTxt.Text;
             this._user = loginForm.loginTxt.Text;
             this._password = loginForm.passwordTxt.Text;
@@ -79,6 +77,9 @@ namespace TestRail_Searcher
             testCasesDataGridView.Columns.Add("ID", "ID");
             testCasesDataGridView.Columns.Add("Original ID", "Original ID");
             testCasesDataGridView.Columns.Add("Title", "Title");
+
+            this.Text = Program.VersionLabel;
+            loginForm.Close();
         }
 
         public class ComboboxItem
@@ -167,7 +168,7 @@ namespace TestRail_Searcher
                 }
                 catch (Exception ex)
                 {
-                    LogException(ex);
+                    Program.LogException(ex);
                 }
             }
         }
@@ -229,9 +230,13 @@ namespace TestRail_Searcher
         private void UpdateDatabase()
         {
             SetLoading(true);
+            var testCasesCount = 0;
+            testCasesCountLbl.Invoke((MethodInvoker)delegate
+            {
+                testCasesCountLbl.Text = "updating...";
+            });
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            var testCasesCount = 0;
             Parallel.ForEach(SelectedSuites, new ParallelOptions {MaxDegreeOfParallelism = Threads}, suite =>
             {
                 var testCases = _trr.GetTestCases(ProjectId, Int32.Parse(suite));
@@ -284,7 +289,7 @@ namespace TestRail_Searcher
 
                     try
                     {
-                        if (dbs.TestCaseExists(testCaseDocument.Id))
+                        if (dbs.DocumentExists(TestCasesCollectionName, testCaseDocument.Id))
                         {
                             if (dbs.IsTestCaseUpdatable(testCaseDocument.Id, testCaseDocument.UpdatedOn))
                             {
@@ -298,7 +303,7 @@ namespace TestRail_Searcher
                     }
                     catch (Exception ex)
                     {
-                        LogException(ex);
+                        Program.LogException(ex);
                     }
                     testCasesCountLbl.Invoke((MethodInvoker) delegate
                     {
@@ -308,7 +313,7 @@ namespace TestRail_Searcher
             });
 
             sw.Stop();
-            Console.WriteLine("Update took: " + sw.Elapsed.ToString("ss") + "s");
+            Console.WriteLine(@"Update took: " + sw.Elapsed.ToString("ss") + @"s");
 
             SetLoading(false);
 
@@ -319,7 +324,7 @@ namespace TestRail_Searcher
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                Program.LogException(ex);
             }
         }
 
@@ -337,7 +342,7 @@ namespace TestRail_Searcher
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                Program.LogException(ex);
             }
         }
 
@@ -402,12 +407,12 @@ namespace TestRail_Searcher
                 }
                 catch (Exception ex)
                 {
-                    LogException(ex);
+                    Program.LogException(ex);
                 }
             }
             else
             {
-                MessageBox.Show("Select Project and at least one Suite.");
+                MessageBox.Show(@"Select Project and at least one Suite.");
             }
         }
 
@@ -420,7 +425,7 @@ namespace TestRail_Searcher
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                Program.LogException(ex);
             }
         }
 
@@ -436,12 +441,12 @@ namespace TestRail_Searcher
                 }
                 catch (Exception ex)
                 {
-                    LogException(ex);
+                    Program.LogException(ex);
                 }
             }
             else
             {
-                MessageBox.Show("Select Project, at least one Suite and put any keyword.");
+                MessageBox.Show(@"Select Project, at least one Suite and put any keyword.");
             }
 
         }
@@ -481,30 +486,6 @@ namespace TestRail_Searcher
         private void ytChbx_CheckedChanged(object sender, EventArgs e)
         {
             _youTrackTestCases = !_youTrackTestCases;
-        }
-
-        private void LogException(Exception e)
-        {
-            var workingDirectory = Path.GetDirectoryName(Application.ExecutablePath);
-            var fileName = DateTime.Now.ToString("yyyy - MM - dd") + "err.log";
-            if (File.Exists(Path.Combine(workingDirectory + fileName)))
-            {
-                using (FileStream fs = new FileStream(Path.Combine(workingDirectory + fileName), FileMode.Append))
-                {
-                    StreamWriter sw = new StreamWriter(fs);
-                    sw.Write(e.Message);
-                    sw.Close();
-                }
-            }
-            else
-            {
-                using (FileStream fs = new FileStream(Path.Combine(workingDirectory + fileName), FileMode.OpenOrCreate))
-                {
-                    StreamWriter sw = new StreamWriter(fs);
-                    sw.Write(e.Message);
-                    sw.Close();
-                }
-            }
         }
     }
 }

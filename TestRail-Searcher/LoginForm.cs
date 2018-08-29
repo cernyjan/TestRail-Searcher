@@ -5,7 +5,8 @@ namespace TestRail_Searcher
 {
     public partial class LoginForm : Form
     {
-        readonly DatabaseServer _dbs = new DatabaseServer(@"Database.db", "Administrator");
+        static readonly string AdminCollectionName = "Administrator";
+        readonly DatabaseServer _dbs = new DatabaseServer(@"Database.db", AdminCollectionName);
 
         public LoginForm()
         {
@@ -24,6 +25,7 @@ namespace TestRail_Searcher
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
+            loginProgressBar.Visible = true;
             var trr = new TestRailReader(serverTxt.Text, loginTxt.Text, passwordTxt.Text);
             if (trr.TryLogin())
             {
@@ -42,19 +44,24 @@ namespace TestRail_Searcher
 
                 try
                 {
-                    _dbs.InsertDocument(administrator);
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message.Contains("Cannot insert duplicate key in unique index '_id'"))
+                    if (_dbs.DocumentExists(AdminCollectionName, 1))
                     {
                         _dbs.UpdateDocument(administrator);
                     }
+                    else
+                    {
+                        _dbs.InsertDocument(administrator);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Program.LogException(ex);
                 }
             }
             else
             {
-                MessageBox.Show("Cannot login, try again.");
+                loginProgressBar.Visible = false;
+                MessageBox.Show(@"Cannot login, try again.");
                 serverTxt.Focus();
             }
         }

@@ -23,9 +23,9 @@ namespace TestRail_Searcher
                 Console.WriteLine(c["email"]);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
+                Program.LogException(ex);
                 return false;
             }
         }
@@ -40,12 +40,6 @@ namespace TestRail_Searcher
         {
             JArray c = (JArray)this._client.SendGet("get_suites/" + projectId);
             return c;
-        }
-
-        public string GetSuiteName(int suiteId)
-        {
-            JObject c = (JObject)this._client.SendGet("get_suite/" + suiteId);
-            return c["name"].ToString();
         }
 
         public JArray GetTestCases(int projectId, int suiteId)
