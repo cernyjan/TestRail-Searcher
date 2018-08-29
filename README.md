@@ -11,6 +11,7 @@ Comparison between native TestRail search and this tool:
 * minor bug fixes
 * added version number into header
 * little design changes
+* improved error logging
 
 ### v1.0.4.0
 * speed up searching and caching (breaking change) - update the database is needed
