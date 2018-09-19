@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace TestRail_Searcher
 {
@@ -23,7 +26,12 @@ namespace TestRail_Searcher
         protected List<string> SelectedSuites = new List<string>();
         protected Dictionary<int, string> Suites = new Dictionary<int, string>();
         protected Dictionary<int, List<string>> Sections = new Dictionary<int, List<string>>();
-
+        protected Dictionary<int, string> Assignees = new Dictionary<int, string>();
+        JArray _caseFields;
+        readonly Dictionary<int, string> _statuses = new Dictionary<int, string>();
+        readonly Dictionary<int, string> _testTypes = new Dictionary<int, string>();
+        readonly Dictionary<int, string> _tags = new Dictionary<int, string>();
+        
         public TestRailSearcherForm()
         {
             InitializeComponent();
@@ -46,6 +54,9 @@ namespace TestRail_Searcher
             SetLoading(false);
 
             _trr = new TestRailReader(this._server, this._user, this._password);
+            _caseFields = _trr.GetCaseFields();
+            GetAssignees();
+
             var projects = _trr.GetProjects();
             foreach (var project in projects)
             {
@@ -66,6 +77,7 @@ namespace TestRail_Searcher
                     SetLoading(true);
                     FillSuites();
                     GetSections();
+                    GetStatusesAndTestTypesAndTags();
                     SetLoading(false);
                     break;
                 }
@@ -73,10 +85,14 @@ namespace TestRail_Searcher
             }
 
             testCasesDataGridView.Columns.Add("Suite", "Suite");
-            testCasesDataGridView.Columns.Add("Category", "Category");
             testCasesDataGridView.Columns.Add("ID", "ID");
-            testCasesDataGridView.Columns.Add("Original ID", "Original ID");
+            testCasesDataGridView.Columns.Add("Category", "Category");
             testCasesDataGridView.Columns.Add("Title", "Title");
+            testCasesDataGridView.Columns.Add("Original ID", "Original ID");
+            testCasesDataGridView.Columns.Add("Test Type", "Test Type");
+            testCasesDataGridView.Columns.Add("Tags", "Tags");
+            testCasesDataGridView.Columns.Add("Status", "Status");
+            testCasesDataGridView.Columns.Add("Assignee", "Assignee");
 
             this.Text = Program.VersionLabel;
             loginForm.Close();
@@ -132,11 +148,107 @@ namespace TestRail_Searcher
             }
         }
 
+        private void GetStatusesAndTestTypesAndTags()
+        {
+            _statuses.Clear();
+            _testTypes.Clear();
+            _tags.Clear();
+            foreach (JObject content in _caseFields.Children<JObject>())
+            {
+                try
+                {
+                    foreach (JProperty prop in content.Properties())
+                    {
+                        if (prop.Name.Equals("system_name"))
+                        {
+                            if (prop.Value.ToString().Equals("custom_custom_status"))
+                            {
+                                string statusValues = content["configs"][0]["options"]["items"].ToString();
+                                List<string> statusList = statusValues.Split('\n').ToList<string>();
+
+                                foreach (var status in statusList)
+                                {
+                                    string[] statusSplit = status.Split(new string[] {", "}, StringSplitOptions.None);
+                                    _statuses.Add(Convert.ToInt32(statusSplit[0]), statusSplit[1]);
+                                }
+                            }
+                            else if (prop.Value.ToString().Equals("custom_custom_test_type"))
+                            {
+                                var configs = content["configs"];
+                                foreach (var config in configs)
+                                {
+                                    List<int> projects = new List<int>();
+                                    var temp = config["context"]["project_ids"].ToList();
+                                    foreach (var t in temp)
+                                    {
+                                        var a = Convert.ToInt32(t.ToString());
+                                        projects.Add(a);
+                                    }
+                                    if (projects.Contains(ProjectId))
+                                    {
+                                        var testTypeValues = config["options"]["items"].ToString();
+                                        List<string> testTypeList = testTypeValues.Split('\n').ToList<string>();
+
+                                        foreach (var testType in testTypeList)
+                                        {
+                                            string[] testTypeSplit = testType.Split(new string[] {", "},
+                                                StringSplitOptions.None);
+                                            _testTypes.Add(Convert.ToInt32(testTypeSplit[0]), testTypeSplit[1]);
+                                        }
+                                    }
+                                }
+                            }
+                            else if (prop.Value.ToString().Equals("custom_custom_tags"))
+                            {
+                                var configs = content["configs"];
+                                foreach (var config in configs)
+                                {
+                                    List<int> projects = new List<int>();
+                                    var temp = config["context"]["project_ids"].ToList();
+                                    foreach (var t in temp)
+                                    {
+                                        var a = Convert.ToInt32(t.ToString());
+                                        projects.Add(a);
+                                    }
+                                    if (projects.Contains(ProjectId))
+                                    {
+                                        var tagValues = config["options"]["items"].ToString();
+                                        List<string> tagList = tagValues.Split('\n').ToList<string>();
+
+                                        foreach (var tag in tagList)
+                                        {
+                                            string[] tagSplit = tag.Split(new string[] {", "}, StringSplitOptions.None);
+                                            _tags.Add(Convert.ToInt32(tagSplit[0]), tagSplit[1]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Program.LogException(ex);
+                }
+            }
+        }
+
+        private void GetAssignees()
+        {
+            Assignees.Clear();
+            var users = _trr.GetUsers();
+            foreach (var user in users)
+            {
+                Assignees.Add((int)user["id"], (string)user["name"]);
+            }
+        }
+
         private void projectCmb_SelectionChangeCommitted(object sender, EventArgs e)
         {
             SetLoading(true);
             FillSuites();
             GetSections();
+            GetStatusesAndTestTypesAndTags();
             SetLoading(false);
         }
 
@@ -227,6 +339,57 @@ namespace TestRail_Searcher
             }
         }
 
+        private string GetStatusName(int statusId)
+        {
+            if (statusId > -1)
+            {
+                return _statuses[statusId];
+            }
+            return "";
+        }
+
+        private string GetTestTypeName(List<int> testTypeIds)
+        {
+            if (testTypeIds.Count > 0)
+            {
+
+                StringBuilder testTypes = new StringBuilder();
+                foreach (var id in testTypeIds)
+                {
+                    testTypes.Append(_testTypes[id]);
+                    testTypes.Append(", ");
+                }
+                var testType = testTypes.ToString();
+                return testType.Substring(0, testType.Length - 2);
+            }
+            return "";
+        }
+
+        private string GetTagName(List<int> tagIds)
+        {
+            if (tagIds.Count > 0)
+            {
+                StringBuilder tags = new StringBuilder();
+                foreach (var id in tagIds)
+                {
+                    tags.Append(_tags[id]);
+                    tags.Append(", ");
+                }
+                var tag = tags.ToString();
+                return tag.Substring(0, tag.Length - 2);
+            }
+            return "";
+        }
+
+        private string GetAssigneeName(int assigneeId)
+        {
+            if (assigneeId > -1)
+            {
+                return Assignees[assigneeId];
+            }
+            return "";
+        }
+
         private void UpdateDatabase()
         {
             SetLoading(true);
@@ -248,6 +411,26 @@ namespace TestRail_Searcher
                     var sectionName = GetSectionName(sectionId);
                     var suiteId = (int) testCase["suite_id"];
                     var suiteName = GetSuiteName(suiteId);
+                    var jTokencustomCustomStatusId = testCase["custom_custom_status"];
+                    var customCustomStatusId = -1;
+                    if (jTokencustomCustomStatusId != null)
+                        if (jTokencustomCustomStatusId.Type != JTokenType.Null)
+                            customCustomStatusId = (int)jTokencustomCustomStatusId;
+                    var customCustomStatusName = GetStatusName(customCustomStatusId);
+                    var customCustomTestTypeIds = testCase["custom_custom_test_type"].ToObject<List<int>>();
+                    var customCustomTestTypeName = GetTestTypeName(customCustomTestTypeIds);
+                    var jTokencustomCustomTagsIds = testCase["custom_custom_tags"];
+                    List<int> customCustomTagsIds = new List<int>();
+                    if (jTokencustomCustomTagsIds != null)
+                        if (jTokencustomCustomTagsIds.Type != JTokenType.Null)
+                            customCustomTagsIds = jTokencustomCustomTagsIds.ToObject<List<int>>();
+                    var customCustomTagsName = GetTagName(customCustomTagsIds);
+                    var jTokenAssigneeId = testCase["custom_assignee"];
+                    var customAssigneeId = -1;
+                    if (jTokenAssigneeId != null)
+                        if (jTokenAssigneeId.Type != JTokenType.Null)
+                            customAssigneeId = (int)jTokenAssigneeId;
+                    var customAssigneeName = GetAssigneeName(customAssigneeId);
                     var notes = testCase["custom_notes"].ToString().ToLower();
                     var preconds = testCase["custom_preconds"].ToString().ToLower();
                     var jTokenComments = testCase["custom_custom_comments"];
@@ -279,6 +462,14 @@ namespace TestRail_Searcher
                         (int?) testCase["milestone_id"],
                         suiteId,
                         suiteName,
+                        customCustomStatusId,
+                        customCustomStatusName,
+                        customCustomTestTypeIds,
+                        customCustomTestTypeName,
+                        customCustomTagsIds,
+                        customCustomTagsName,
+                        customAssigneeId,
+                        customAssigneeName,
                         notes,
                         preconds,
                         stepsInString,
@@ -364,16 +555,19 @@ namespace TestRail_Searcher
                 object[] row =
                 {
                     Suites[testCase.SuiteId],
-                    testCase.SectionName,
                     testCase.Id.ToString(),
+                    testCase.SectionName,
+                    testCase.Title,
                     testCase.CustomCustomOriginalId,
-                    testCase.Title
+                    testCase.CustomCustomTestTypeName,
+                    testCase.CustomCustomTagsName,
+                    testCase.CustomCustomStatusName,
+                    testCase.CustomAssigneeName
                 };
                 testCasesDataGridView.Invoke((MethodInvoker) delegate
                 {
                     testCasesDataGridView.Rows.Add(row);
-                    this.testCasesDataGridView.Columns[testCasesDataGridView.ColumnCount - 1].AutoSizeMode =
-                        DataGridViewAutoSizeColumnMode.Fill;
+                    this.testCasesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 });
             }
             testCasesDataGridView.Invoke((MethodInvoker) delegate
@@ -470,7 +664,7 @@ namespace TestRail_Searcher
 
         private void testCasesDataGridView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > -1 && e.ColumnIndex == 2)
+            if (e.RowIndex > -1 && e.ColumnIndex == 1)
             {
                 object value = testCasesDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                 //e.g. https://testrail.quadient.group/index.php?/cases/view/860801

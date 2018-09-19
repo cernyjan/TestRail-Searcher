@@ -52,7 +52,7 @@
             // updateBtn
             // 
             this.updateBtn.Location = new System.Drawing.Point(353, 134);
-            this.updateBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.updateBtn.Margin = new System.Windows.Forms.Padding(2);
             this.updateBtn.Name = "updateBtn";
             this.updateBtn.Size = new System.Drawing.Size(83, 24);
             this.updateBtn.TabIndex = 0;
@@ -63,7 +63,7 @@
             // searchTxt
             // 
             this.searchTxt.Location = new System.Drawing.Point(11, 180);
-            this.searchTxt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchTxt.Margin = new System.Windows.Forms.Padding(2);
             this.searchTxt.Name = "searchTxt";
             this.searchTxt.Size = new System.Drawing.Size(338, 20);
             this.searchTxt.TabIndex = 1;
@@ -71,7 +71,7 @@
             // searchBtn
             // 
             this.searchBtn.Location = new System.Drawing.Point(353, 178);
-            this.searchBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchBtn.Margin = new System.Windows.Forms.Padding(2);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(83, 23);
             this.searchBtn.TabIndex = 2;
@@ -84,9 +84,9 @@
             this.projectsCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.projectsCmb.FormattingEnabled = true;
             this.projectsCmb.Location = new System.Drawing.Point(56, 5);
-            this.projectsCmb.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.projectsCmb.Margin = new System.Windows.Forms.Padding(2);
             this.projectsCmb.Name = "projectsCmb";
-            this.projectsCmb.Size = new System.Drawing.Size(294, 21);
+            this.projectsCmb.Size = new System.Drawing.Size(380, 21);
             this.projectsCmb.TabIndex = 3;
             this.projectsCmb.SelectionChangeCommitted += new System.EventHandler(this.projectCmb_SelectionChangeCommitted);
             // 
@@ -104,16 +104,16 @@
             // 
             this.suitesChckListBox.FormattingEnabled = true;
             this.suitesChckListBox.Location = new System.Drawing.Point(56, 29);
-            this.suitesChckListBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.suitesChckListBox.Margin = new System.Windows.Forms.Padding(2);
             this.suitesChckListBox.Name = "suitesChckListBox";
-            this.suitesChckListBox.Size = new System.Drawing.Size(690, 94);
+            this.suitesChckListBox.Size = new System.Drawing.Size(941, 94);
             this.suitesChckListBox.TabIndex = 5;
             this.suitesChckListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.suitesChckListBox_ItemCheck);
             // 
             // cleanBtn
             // 
             this.cleanBtn.Location = new System.Drawing.Point(286, 134);
-            this.cleanBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cleanBtn.Margin = new System.Windows.Forms.Padding(2);
             this.cleanBtn.Name = "cleanBtn";
             this.cleanBtn.Size = new System.Drawing.Size(62, 24);
             this.cleanBtn.TabIndex = 6;
@@ -125,8 +125,8 @@
             // 
             this.picLoader.BackColor = System.Drawing.Color.Transparent;
             this.picLoader.Image = global::TestRail_Searcher.Properties.Resources.Loadingsome;
-            this.picLoader.Location = new System.Drawing.Point(610, 126);
-            this.picLoader.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picLoader.Location = new System.Drawing.Point(861, 127);
+            this.picLoader.Margin = new System.Windows.Forms.Padding(2);
             this.picLoader.Name = "picLoader";
             this.picLoader.Size = new System.Drawing.Size(136, 77);
             this.picLoader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -135,8 +135,8 @@
             // 
             // logoutBtn
             // 
-            this.logoutBtn.Location = new System.Drawing.Point(690, 5);
-            this.logoutBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.logoutBtn.Location = new System.Drawing.Point(941, 5);
+            this.logoutBtn.Margin = new System.Windows.Forms.Padding(2);
             this.logoutBtn.Name = "logoutBtn";
             this.logoutBtn.Size = new System.Drawing.Size(56, 23);
             this.logoutBtn.TabIndex = 9;
@@ -147,7 +147,7 @@
             // loginLabel
             // 
             this.loginLabel.AutoSize = true;
-            this.loginLabel.Location = new System.Drawing.Point(436, 7);
+            this.loginLabel.Location = new System.Drawing.Point(730, 10);
             this.loginLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.loginLabel.Name = "loginLabel";
             this.loginLabel.Size = new System.Drawing.Size(0, 13);
@@ -161,11 +161,11 @@
             this.testCasesDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.testCasesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.testCasesDataGridView.Location = new System.Drawing.Point(11, 206);
-            this.testCasesDataGridView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.testCasesDataGridView.Margin = new System.Windows.Forms.Padding(2);
             this.testCasesDataGridView.Name = "testCasesDataGridView";
             this.testCasesDataGridView.ReadOnly = true;
             this.testCasesDataGridView.RowTemplate.Height = 24;
-            this.testCasesDataGridView.Size = new System.Drawing.Size(734, 234);
+            this.testCasesDataGridView.Size = new System.Drawing.Size(986, 344);
             this.testCasesDataGridView.TabIndex = 11;
             this.testCasesDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.testCasesDataGridView1_CellContentClick);
             this.testCasesDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.testCasesDataGridView_CellContentDoubleClick);
@@ -194,7 +194,7 @@
             // 
             this.ytChbx.AutoSize = true;
             this.ytChbx.Location = new System.Drawing.Point(457, 182);
-            this.ytChbx.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ytChbx.Margin = new System.Windows.Forms.Padding(2);
             this.ytChbx.Name = "ytChbx";
             this.ytChbx.Size = new System.Drawing.Size(152, 17);
             this.ytChbx.TabIndex = 15;
@@ -235,7 +235,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(754, 449);
+            this.ClientSize = new System.Drawing.Size(1008, 561);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.foundTestCasesCountLbl);
             this.Controls.Add(this.label4);
@@ -254,7 +254,7 @@
             this.Controls.Add(this.searchTxt);
             this.Controls.Add(this.updateBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "TestRailSearcherForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

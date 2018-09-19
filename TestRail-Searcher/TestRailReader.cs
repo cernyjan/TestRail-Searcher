@@ -52,5 +52,17 @@ namespace TestRail_Searcher
             JArray c = (JArray)this._client.SendGet("get_sections/" + projectId + "&suite_id=" + suiteId);
             return c;
         }
+
+        public JArray GetCaseFields()
+        {
+            JArray c = (JArray)this._client.SendGet("get_case_fields");
+            return c;
+        }
+
+        public JArray GetUsers()
+        {
+            JArray c = (JArray)this._client.SendGet("get_users");
+            return c;
+        }
     }
 }
