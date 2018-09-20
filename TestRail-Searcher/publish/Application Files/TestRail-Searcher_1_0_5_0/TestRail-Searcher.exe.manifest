@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="TestRail-Searcher.exe" version="1.0.5.0" publicKeyToken="f0873cdf0781e42f" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:publisher="Černý Jan" asmv2:product="TestRail Searcher" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="TestRail-Searcher" version="1.0.5.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="TestRail-Searcher.exe" parameters="" />
+  </entryPoint>
+  <co.v1:useManifestForTrust xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet version="1" class="System.Security.NamedPermissionSet" Name="LocalIntranet" Description="Default rights given to applications on the local intranet" Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC Manifest Options
+             If you want to change the Windows User Account Control level replace the 
+             requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+            Specifying requestedExecutionLevel element will disable file and registry virtualization. 
+            Remove this element if your application requires this virtualization for backwards
+            compatibility.
+        -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gurock.TestRail.dll" size="6656">
+      <assemblyIdentity name="Gurock.TestRail" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>PkmQRGNgCDyaf8JzwG9H74kSl6cHTu1bCmFob+/1slU=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LiteDB.dll" size="355328">
+      <assemblyIdentity name="LiteDB" version="4.1.4.0" publicKeyToken="4EE40123013C9F27" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>5yrN30dYa8CZnVmOO9ElolS7b0rhUcB2mTME9uMfu+0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="662528">
+      <assemblyIdentity name="Newtonsoft.Json" version="11.0.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>9Yw3T/yq5ONtdA2Q+/f+cNCrtzKM2a86CntwgD6ZS6Q=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TestRail-Searcher.exe" size="99232">
+      <assemblyIdentity name="TestRail-Searcher" version="1.0.5.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>Q+2VbnpO0DYssin0DfdlB7m8lD7lhN/RDc1D2wTNBLM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="TestRail-Searcher.exe.config" size="184">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>C60yyOZdEhcQL2r7MNpNAb1fAz9VUNTk7bhc75lSeKw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- A list of the Windows versions that this application has been tested on and is
+           is designed to work with. Uncomment the appropriate elements and Windows will 
+           automatically selected the most compatible environment. -->
+      <!-- Windows Vista -->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
+      <!-- Windows 7 -->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <!-- Windows 8 -->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <!-- Windows 8.1 -->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <!-- Windows 10 -->
+      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+    </application>
+  </compatibility>
+<publisherIdentity name="CN=CZ\j.cerny" issuerKeyHash="a5a21b13ed3824059435fb3a327687825c88a7ac" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>wxJc1zK7D1Aah7uSXVQH/U0izfLQ18vYnA6hUvt5ax0=</DigestValue></Reference></SignedInfo><SignatureValue>sYUJlhKL25bXgSx+yHlTT3MURi/oNEsnT/hEqOnKtnNFhm7ShqhVIVFn0F1U3ggC0yG+uoY/RtvGo5DyYVA+HnA6nVA7X41ShsxIuERDOAGXgk56JZy2TcEnZQURVU7QSHRa+VRTt5hmggVJ86de1JHcUaLNJJlASwnBOo9RzZk=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>3O1gpz+RTRmg/URo9AOj4xQKJY28+zZ0wK6NBPpdGhTiVpAVYLdVLU+Av/qudXaVX3afd9Vk4kReM1yazDq7pY6ehnzEwIDrpj1xTqSLignW2Oe7zIV6A4tKEItgkpB+CqIO46TvI7DoyaSTvHAyk4+0E7yZZL9YMXo65DUHoU0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="1d6b79fb52a10e9cd8cbd7d0f2cd224dfd07545d92bb871a500fbb32d75c12c3" Description="" Url=""><as:assemblyIdentity name="TestRail-Searcher.exe" version="1.0.5.0" publicKeyToken="f0873cdf0781e42f" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=CZ\j.cerny</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>IShEQ663XuqR6hAKAHvJ1t8B8YRbY4NaOvu71LMcYuw=</DigestValue></Reference></SignedInfo><SignatureValue>uCOXtuMJxd47NS5PuZRl4FnlZ1YfoOdtOo0UsCOy1pRXaeft7JkUuvMQqJMrGhNdcSIaKdD+YJ1K2hWT/KejG2s3qDzWlHkwBNWXcf6LUsHs9QoKu7UJGxbNhFW53nwlzHc7x7m7enHpLzarJQuJ8v2IzJ9tbYyIScHXDmM/dMU=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>3O1gpz+RTRmg/URo9AOj4xQKJY28+zZ0wK6NBPpdGhTiVpAVYLdVLU+Av/qudXaVX3afd9Vk4kReM1yazDq7pY6ehnzEwIDrpj1xTqSLignW2Oe7zIV6A4tKEItgkpB+CqIO46TvI7DoyaSTvHAyk4+0E7yZZL9YMXo65DUHoU0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIBwTCCASqgAwIBAgIQE8XUOpvlxqFA4yEc2wijUjANBgkqhkiG9w0BAQsFADAfMR0wGwYDVQQDHhQAQwBaAFwAagAuAGMAZQByAG4AeTAeFw0xODA3MzExMTI5MzZaFw0xOTA3MzExNzI5MzZaMB8xHTAbBgNVBAMeFABDAFoAXABqAC4AYwBlAHIAbgB5MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDc7WCnP5FNGaD9RGj0A6PjFAoljbz7NnTAro0E+l0aFOJWkBVgt1UtT4C/+q51dpVfdp931WTiRF4zXJrMOruljp6GfMTAgOumPXFOpIuKCdbY57vMhXoDi0oQi2CSkH4Kog7jpO8jsOjJpJO8cDKTj7QTvJlkv1gxejrkNQehTQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAF5Wv+AAkoVHWDfu2x1s1T2/ksBuJwouJuxHUWjTNRwX4eu0L8Zjw3oTg1/jFRAdV0gyOakaggfGMIZGmnSL7MgFf2mekO629i+U9hxT/fJswhwJFtobP8LXN4wtJ+vSmx2VVLNKjo/hN08iraw7rW7M5frxfbdRnD5QfESyYrhe</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
