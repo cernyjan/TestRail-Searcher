@@ -1,12 +1,15 @@
 # TestRail Searcher
 Windows Form application for Full text searching in TestRail. 
 
-Compatible with TestRail *5.5.0.3735* and lower.
+Compatible with TestRail *5.5.1.3746* and lower.
 
 Comparison between native TestRail search and this tool:
 ![TestRail Searcher](TestRail-Searcher.png)
 
 ## Release Notes
+### v1.0.5.0
+* added more columns for found TCs
+
 ### v1.0.4.1
 * minor bug fixes
 * added version number into header
@@ -26,4 +29,4 @@ Comparison between native TestRail search and this tool:
 * bumped version
 
 ## Download tool
-[TestRail Searcher v1.0.4.1](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.4.1)
+[TestRail Searcher v1.0.5.0](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.5.0)
