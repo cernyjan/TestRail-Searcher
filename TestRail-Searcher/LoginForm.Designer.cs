@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.label1 = new System.Windows.Forms.Label();
             this.serverTxt = new System.Windows.Forms.TextBox();
             this.loginTxt = new System.Windows.Forms.TextBox();
@@ -52,7 +53,7 @@
             // serverTxt
             // 
             this.serverTxt.Location = new System.Drawing.Point(66, 11);
-            this.serverTxt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.serverTxt.Margin = new System.Windows.Forms.Padding(2);
             this.serverTxt.Name = "serverTxt";
             this.serverTxt.Size = new System.Drawing.Size(210, 20);
             this.serverTxt.TabIndex = 1;
@@ -60,7 +61,7 @@
             // loginTxt
             // 
             this.loginTxt.Location = new System.Drawing.Point(66, 33);
-            this.loginTxt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginTxt.Margin = new System.Windows.Forms.Padding(2);
             this.loginTxt.Name = "loginTxt";
             this.loginTxt.Size = new System.Drawing.Size(210, 20);
             this.loginTxt.TabIndex = 3;
@@ -78,7 +79,7 @@
             // passwordTxt
             // 
             this.passwordTxt.Location = new System.Drawing.Point(66, 56);
-            this.passwordTxt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.passwordTxt.Margin = new System.Windows.Forms.Padding(2);
             this.passwordTxt.Name = "passwordTxt";
             this.passwordTxt.PasswordChar = '*';
             this.passwordTxt.Size = new System.Drawing.Size(210, 20);
@@ -97,7 +98,7 @@
             // loginBtn
             // 
             this.loginBtn.Location = new System.Drawing.Point(158, 84);
-            this.loginBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginBtn.Margin = new System.Windows.Forms.Padding(2);
             this.loginBtn.Name = "loginBtn";
             this.loginBtn.Size = new System.Drawing.Size(56, 23);
             this.loginBtn.TabIndex = 6;
@@ -109,7 +110,7 @@
             // 
             this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelBtn.Location = new System.Drawing.Point(219, 84);
-            this.cancelBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cancelBtn.Margin = new System.Windows.Forms.Padding(2);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(56, 23);
             this.cancelBtn.TabIndex = 7;
@@ -140,7 +141,8 @@
             this.Controls.Add(this.serverTxt);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

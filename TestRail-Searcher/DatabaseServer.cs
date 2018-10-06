@@ -29,6 +29,9 @@ namespace TestRail_Searcher
                     this._testCaseCollection.EnsureIndex(x => x.Title, "LOWER($.Title)");
                     this._testCaseCollection.EnsureIndex(x => x.SectionName, "LOWER($.SectionName)");
                     this._testCaseCollection.EnsureIndex(x => x.SuiteName, "LOWER($.SuiteName)");
+                    this._testCaseCollection.EnsureIndex(x => x.CustomCustomTestTypeName, "LOWER($.CustomCustomTestTypeName)");
+                    this._testCaseCollection.EnsureIndex(x => x.CustomCustomTagsName, "LOWER($.CustomCustomTagsName)");
+                    this._testCaseCollection.EnsureIndex(x => x.CustomAssigneeName, "LOWER($.CustomAssigneeName)");
                     break;
                 default:
                     throw new NotImplementedException
@@ -116,6 +119,10 @@ namespace TestRail_Searcher
                         || x.Title.Contains(keyword)
                         || x.SuiteName.Contains(keyword)
                         || x.SectionName.Contains(keyword)
+                        || x.CustomCustomTestTypeName.Contains(keyword)
+                        || x.CustomCustomTagsName.Contains(keyword)
+                        || x.CustomCustomStatusName.Contains(keyword)
+                        || x.CustomAssigneeName.Contains(keyword)
                         || x.CustomNotes.Contains(keyword)
                         || x.CustomPreconds.Contains(keyword)
                         || x.CustomSteps.Contains(keyword)
@@ -134,6 +141,10 @@ namespace TestRail_Searcher
                         || keywords.Any(k => testCase.Title.Contains(k))
                         || keywords.Any(k => testCase.SuiteName.Contains(k))
                         || keywords.Any(k => testCase.SectionName.Contains(k))
+                        || keywords.Any(k => testCase.CustomCustomTestTypeName.Contains(k))
+                        || keywords.Any(k => testCase.CustomCustomTagsName.Contains(k))
+                        || keywords.Any(k => testCase.CustomCustomStatusName.Contains(k))
+                        || keywords.Any(k => testCase.CustomAssigneeName.Contains(k))
                         || keywords.Any(k => testCase.CustomNotes.Contains(k))
                         || keywords.Any(k => testCase.CustomPreconds.Contains(k))
                         || keywords.Any(k => testCase.CustomSteps.Contains(k))

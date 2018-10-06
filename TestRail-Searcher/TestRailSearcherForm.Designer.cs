@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestRailSearcherForm));
             this.updateBtn = new System.Windows.Forms.Button();
             this.searchTxt = new System.Windows.Forms.TextBox();
             this.searchBtn = new System.Windows.Forms.Button();
@@ -254,6 +255,7 @@
             this.Controls.Add(this.searchTxt);
             this.Controls.Add(this.updateBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "TestRailSearcherForm";
