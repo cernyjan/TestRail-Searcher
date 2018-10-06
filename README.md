@@ -7,6 +7,9 @@ Comparison between native TestRail search and this tool:
 ![TestRail Searcher](TestRail-Searcher.png)
 
 ## Release Notes
+### v1.0.6.0
+* added searching above Test Type, Tags, State and Assign
+
 ### v1.0.5.0
 * added more columns for found TCs
 
@@ -29,4 +32,4 @@ Comparison between native TestRail search and this tool:
 * bumped version
 
 ## Download tool
-[TestRail Searcher v1.0.5.0](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.5.0)
+[TestRail Searcher v1.0.6.0](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.6.0)
