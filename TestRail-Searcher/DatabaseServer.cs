@@ -29,6 +29,7 @@ namespace TestRail_Searcher
                     this._testCaseCollection.EnsureIndex(x => x.Title, "LOWER($.Title)");
                     this._testCaseCollection.EnsureIndex(x => x.SectionName, "LOWER($.SectionName)");
                     this._testCaseCollection.EnsureIndex(x => x.SuiteName, "LOWER($.SuiteName)");
+                    this._testCaseCollection.EnsureIndex(x => x.CustomCustomStatusName, "LOWER($.CustomCustomStatusName)");
                     this._testCaseCollection.EnsureIndex(x => x.CustomCustomTestTypeName, "LOWER($.CustomCustomTestTypeName)");
                     this._testCaseCollection.EnsureIndex(x => x.CustomCustomTagsName, "LOWER($.CustomCustomTagsName)");
                     this._testCaseCollection.EnsureIndex(x => x.CustomAssigneeName, "LOWER($.CustomAssigneeName)");

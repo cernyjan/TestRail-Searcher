@@ -7,6 +7,9 @@ Comparison between native TestRail search and this tool:
 ![TestRail Searcher](TestRail-Searcher.png)
 
 ## Release Notes
+### v1.0.6.1
+* fixed bug: Cannot search in State
+
 ### v1.0.6.0
 * added searching above Test Type, Tags, State and Assign
 
@@ -32,4 +35,4 @@ Comparison between native TestRail search and this tool:
 * bumped version
 
 ## Download tool
-[TestRail Searcher v1.0.6.0](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.6.0)
+[TestRail Searcher v1.0.6.1](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.6.1)
