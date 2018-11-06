@@ -55,7 +55,7 @@
             this.serverTxt.Location = new System.Drawing.Point(66, 11);
             this.serverTxt.Margin = new System.Windows.Forms.Padding(2);
             this.serverTxt.Name = "serverTxt";
-            this.serverTxt.Size = new System.Drawing.Size(210, 20);
+            this.serverTxt.Size = new System.Drawing.Size(227, 20);
             this.serverTxt.TabIndex = 1;
             // 
             // loginTxt
@@ -63,7 +63,7 @@
             this.loginTxt.Location = new System.Drawing.Point(66, 33);
             this.loginTxt.Margin = new System.Windows.Forms.Padding(2);
             this.loginTxt.Name = "loginTxt";
-            this.loginTxt.Size = new System.Drawing.Size(210, 20);
+            this.loginTxt.Size = new System.Drawing.Size(227, 20);
             this.loginTxt.TabIndex = 3;
             // 
             // label2
@@ -82,7 +82,7 @@
             this.passwordTxt.Margin = new System.Windows.Forms.Padding(2);
             this.passwordTxt.Name = "passwordTxt";
             this.passwordTxt.PasswordChar = '*';
-            this.passwordTxt.Size = new System.Drawing.Size(210, 20);
+            this.passwordTxt.Size = new System.Drawing.Size(227, 20);
             this.passwordTxt.TabIndex = 5;
             // 
             // label3
@@ -97,7 +97,7 @@
             // 
             // loginBtn
             // 
-            this.loginBtn.Location = new System.Drawing.Point(158, 84);
+            this.loginBtn.Location = new System.Drawing.Point(177, 84);
             this.loginBtn.Margin = new System.Windows.Forms.Padding(2);
             this.loginBtn.Name = "loginBtn";
             this.loginBtn.Size = new System.Drawing.Size(56, 23);
@@ -109,7 +109,7 @@
             // cancelBtn
             // 
             this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelBtn.Location = new System.Drawing.Point(219, 84);
+            this.cancelBtn.Location = new System.Drawing.Point(237, 84);
             this.cancelBtn.Margin = new System.Windows.Forms.Padding(2);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(56, 23);
@@ -121,7 +121,7 @@
             // 
             this.loginProgressBar.Location = new System.Drawing.Point(66, 84);
             this.loginProgressBar.Name = "loginProgressBar";
-            this.loginProgressBar.Size = new System.Drawing.Size(87, 23);
+            this.loginProgressBar.Size = new System.Drawing.Size(106, 23);
             this.loginProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.loginProgressBar.TabIndex = 8;
             this.loginProgressBar.Visible = false;
@@ -130,7 +130,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 112);
+            this.ClientSize = new System.Drawing.Size(304, 112);
             this.Controls.Add(this.loginProgressBar);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.loginBtn);

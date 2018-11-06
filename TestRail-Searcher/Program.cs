@@ -10,7 +10,7 @@ namespace TestRail_Searcher
         public static void LogException(Exception e)
         {
             var workingDirectory = Path.GetDirectoryName(Application.ExecutablePath) ?? "";
-            var fileName = "TestRail-Searcher_" + DateTime.Now.ToString("yyyy-MM-dd") + "_err.log";
+            var fileName = "TestRail-Searcher_errors.log";
             if (File.Exists(Path.Combine(workingDirectory, fileName)))
             {
                 using (FileStream fs = new FileStream(Path.Combine(workingDirectory, fileName), FileMode.Append))
