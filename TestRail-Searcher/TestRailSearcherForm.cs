@@ -409,7 +409,7 @@ namespace TestRail_Searcher
                 {
                     try
                     {
-                        var originalId = testCase["custom_custom_original_i"].ToString();
+                        var originalId = testCase["custom_custom_original_id"].ToString();
                         var title = testCase["title"].ToString();
                         var sectionId = (int) testCase["section_id"];
                         var sectionName = GetSectionName(sectionId);
@@ -569,31 +569,39 @@ namespace TestRail_Searcher
                 foundTestCasesCountLbl.Text = "searching...";
             });
             var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
-            var result = dbs.GetAllTestCasesByKeyword(this.SelectedSuites, searchTxt.Text, _youTrackTestCases);
-            foreach (var testCase in result)
+            try
             {
-                object[] row =
+                var result = dbs.GetAllTestCasesByKeyword(this.SelectedSuites, searchTxt.Text, _youTrackTestCases);
+                foreach (var testCase in result)
                 {
-                    Suites[testCase.SuiteId],
-                    testCase.Id.ToString(),
-                    testCase.SectionName,
-                    testCase.Title,
-                    testCase.CustomCustomOriginalId,
-                    testCase.CustomCustomTestTypeName,
-                    testCase.CustomCustomTagsName,
-                    testCase.CustomCustomStatusName,
-                    testCase.CustomAssigneeName
-                };
+                    object[] row =
+                    {
+                        Suites[testCase.SuiteId],
+                        testCase.Id.ToString(),
+                        testCase.SectionName,
+                        testCase.Title,
+                        testCase.CustomCustomOriginalId,
+                        testCase.CustomCustomTestTypeName,
+                        testCase.CustomCustomTagsName,
+                        testCase.CustomCustomStatusName,
+                        testCase.CustomAssigneeName
+                    };
+                    testCasesDataGridView.Invoke((MethodInvoker) delegate
+                    {
+                        testCasesDataGridView.Rows.Add(row);
+                        this.testCasesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    });
+                }
                 testCasesDataGridView.Invoke((MethodInvoker) delegate
                 {
-                    testCasesDataGridView.Rows.Add(row);
-                    this.testCasesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    foundTestCasesCountLbl.Text = testCasesDataGridView.Rows.Count.ToString();
                 });
             }
-            testCasesDataGridView.Invoke((MethodInvoker) delegate
+            catch (Exception ex)
             {
-                foundTestCasesCountLbl.Text = testCasesDataGridView.Rows.Count.ToString();
-            });
+                Program.LogException(ex);
+                MessageBox.Show(@"Cannot search test cases in DB, see log file.");
+            }
 
             SetLoading(false);
         }
