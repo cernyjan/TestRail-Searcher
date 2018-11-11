@@ -409,61 +409,88 @@ namespace TestRail_Searcher
                 {
                     try
                     {
-                        var originalId = testCase["custom_custom_original_id"].ToString();
+                        var id = (int)testCase["id"];
+                        var customOriginalId = "";
+                        var jTokenCustomOriginalId = testCase["custom_custom_original_id"];
+                        if (jTokenCustomOriginalId != null)
+                            if (jTokenCustomOriginalId.Type != JTokenType.Null)
+                                customOriginalId = jTokenCustomOriginalId.ToString();
                         var title = testCase["title"].ToString();
                         var sectionId = (int) testCase["section_id"];
                         var sectionName = GetSectionName(sectionId);
+                        int milestoneId = -1;
+                        var jTokenMilestoneId = testCase["milestone_id"];
+                        if (jTokenMilestoneId != null)
+                            if (jTokenMilestoneId.Type != JTokenType.Null)
+                                milestoneId = (int)jTokenMilestoneId;
                         var suiteId = (int) testCase["suite_id"];
                         var suiteName = GetSuiteName(suiteId);
-                        var jTokencustomCustomStatusId = testCase["custom_custom_status"];
                         var customCustomStatusId = -1;
-                        if (jTokencustomCustomStatusId != null)
-                            if (jTokencustomCustomStatusId.Type != JTokenType.Null)
-                                customCustomStatusId = (int)jTokencustomCustomStatusId;
+                        var jTokenCustomCustomStatusId = testCase["custom_custom_status"];
+                        if (jTokenCustomCustomStatusId != null)
+                            if (jTokenCustomCustomStatusId.Type != JTokenType.Null)
+                                customCustomStatusId = (int)jTokenCustomCustomStatusId;
                         var customCustomStatusName = GetStatusName(customCustomStatusId);
-                        var customCustomTestTypeIds = testCase["custom_custom_test_type"].ToObject<List<int>>();
+                        List<int> customCustomTestTypeIds = new List<int>();
+                        var jTokenCustomCustomCustomTestTypeIds = testCase["custom_custom_test_type"];
+                        if (jTokenCustomCustomCustomTestTypeIds != null)
+                            if (jTokenCustomCustomCustomTestTypeIds.Type != JTokenType.Null)
+                                customCustomTestTypeIds = jTokenCustomCustomCustomTestTypeIds.ToObject<List<int>>();
                         var customCustomTestTypeName = GetTestTypeName(customCustomTestTypeIds);
-                        var jTokencustomCustomTagsIds = testCase["custom_custom_tags"];
                         List<int> customCustomTagsIds = new List<int>();
-                        if (jTokencustomCustomTagsIds != null)
-                            if (jTokencustomCustomTagsIds.Type != JTokenType.Null)
-                                customCustomTagsIds = jTokencustomCustomTagsIds.ToObject<List<int>>();
+                        var jTokenCustomCustomTagsIds = testCase["custom_custom_tags"];
+                        if (jTokenCustomCustomTagsIds != null)
+                            if (jTokenCustomCustomTagsIds.Type != JTokenType.Null)
+                                customCustomTagsIds = jTokenCustomCustomTagsIds.ToObject<List<int>>();
                         var customCustomTagsName = GetTagName(customCustomTagsIds);
-                        var jTokenAssigneeId = testCase["custom_assignee"];
                         var customAssigneeId = -1;
+                        var jTokenAssigneeId = testCase["custom_assignee"];
                         if (jTokenAssigneeId != null)
                             if (jTokenAssigneeId.Type != JTokenType.Null)
                                 customAssigneeId = (int)jTokenAssigneeId;
                         var customAssigneeName = GetAssigneeName(customAssigneeId);
-                        var notes = testCase["custom_notes"].ToString().ToLower();
-                        var preconds = testCase["custom_preconds"].ToString().ToLower();
+                        var notes = "";
+                        var jTokenNotes = testCase["custom_notes"];
+                        if (jTokenNotes != null)
+                            if (jTokenNotes.Type != JTokenType.Null)
+                                notes = jTokenNotes.ToString().ToLower();
+                        var preconds = "";
+                        var jTokenPreconds = testCase["custom_preconds"];
+                        if (jTokenPreconds != null)
+                            if (jTokenPreconds.Type != JTokenType.Null)
+                                preconds = jTokenPreconds.ToString().ToLower();
+                        var customComments = "";
                         var jTokenComments = testCase["custom_custom_comments"];
-                        var comments = "";
                         if (jTokenComments != null)
-                        {
-                            comments = jTokenComments.ToString().ToLower();
-                        }
-                        var steps = new List<string>();
+                            if (jTokenComments.Type != JTokenType.Null)
+                                customComments = jTokenComments.ToString().ToLower();
+                        List<string> steps = new List<string>();
                         List<string> expecteds = new List<string>();
-                        foreach (var step in testCase["custom_steps_separated"])
-                        {
-                            steps.Add((string) step["content"]);
-                            expecteds.Add((string) step["expected"]);
-                        }
-                        var stepsInString = String.Join(", ", steps.ToArray()).ToLower();
-                        var expectedsInString = String.Join(", ", expecteds.ToArray()).ToLower();
+                        var stepsInString = "";
+                        var expectedsInString = "";
+                        var jTokenCustomSteps = testCase["custom_steps_separated"];
+                        if (jTokenCustomSteps != null)
+                            if (jTokenCustomSteps.Type != JTokenType.Null) {
+                                foreach (var step in jTokenCustomSteps)
+                                {
+                                    steps.Add((string)step["content"]);
+                                    expecteds.Add((string)step["expected"]);
+                                }
+                                stepsInString = String.Join(", ", steps.ToArray()).ToLower();
+                                expectedsInString = String.Join(", ", expecteds.ToArray()).ToLower();
+                            }
 
                         var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
-
+                        
                         // Create your new Test Case instance
                         var testCaseDocument = new TestCase();
                         testCaseDocument.SetProperties(
-                            (int) testCase["id"],
-                            originalId,
+                            id,
+                            customOriginalId,
                             title,
                             sectionId,
                             sectionName,
-                            (int?) testCase["milestone_id"],
+                            milestoneId,
                             suiteId,
                             suiteName,
                             customCustomStatusId,
@@ -478,7 +505,7 @@ namespace TestRail_Searcher
                             preconds,
                             stepsInString,
                             expectedsInString,
-                            comments,
+                            customComments,
                             (int) testCase["updated_on"]
                         );
                         
