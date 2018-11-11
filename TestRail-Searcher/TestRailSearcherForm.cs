@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -403,83 +404,84 @@ namespace TestRail_Searcher
             Parallel.ForEach(SelectedSuites, new ParallelOptions {MaxDegreeOfParallelism = Threads}, suite =>
             {
                 var testCases = _trr.GetTestCases(ProjectId, Int32.Parse(suite));
+                var exceptions = new ConcurrentQueue<Exception>();
                 Parallel.ForEach(testCases, new ParallelOptions {MaxDegreeOfParallelism = Threads}, testCase =>
                 {
-                    var originalId = testCase["custom_custom_original_id"].ToString();
-                    var title = testCase["title"].ToString();
-                    var sectionId = (int) testCase["section_id"];
-                    var sectionName = GetSectionName(sectionId);
-                    var suiteId = (int) testCase["suite_id"];
-                    var suiteName = GetSuiteName(suiteId);
-                    var jTokencustomCustomStatusId = testCase["custom_custom_status"];
-                    var customCustomStatusId = -1;
-                    if (jTokencustomCustomStatusId != null)
-                        if (jTokencustomCustomStatusId.Type != JTokenType.Null)
-                            customCustomStatusId = (int)jTokencustomCustomStatusId;
-                    var customCustomStatusName = GetStatusName(customCustomStatusId);
-                    var customCustomTestTypeIds = testCase["custom_custom_test_type"].ToObject<List<int>>();
-                    var customCustomTestTypeName = GetTestTypeName(customCustomTestTypeIds);
-                    var jTokencustomCustomTagsIds = testCase["custom_custom_tags"];
-                    List<int> customCustomTagsIds = new List<int>();
-                    if (jTokencustomCustomTagsIds != null)
-                        if (jTokencustomCustomTagsIds.Type != JTokenType.Null)
-                            customCustomTagsIds = jTokencustomCustomTagsIds.ToObject<List<int>>();
-                    var customCustomTagsName = GetTagName(customCustomTagsIds);
-                    var jTokenAssigneeId = testCase["custom_assignee"];
-                    var customAssigneeId = -1;
-                    if (jTokenAssigneeId != null)
-                        if (jTokenAssigneeId.Type != JTokenType.Null)
-                            customAssigneeId = (int)jTokenAssigneeId;
-                    var customAssigneeName = GetAssigneeName(customAssigneeId);
-                    var notes = testCase["custom_notes"].ToString().ToLower();
-                    var preconds = testCase["custom_preconds"].ToString().ToLower();
-                    var jTokenComments = testCase["custom_custom_comments"];
-                    var comments = "";
-                    if (jTokenComments != null)
-                    {
-                        comments = jTokenComments.ToString().ToLower();
-                    }
-                    var steps = new List<string>();
-                    var expecteds = new List<string>();
-                    foreach (var step in testCase["custom_steps_separated"])
-                    {
-                        steps.Add((string) step["content"]);
-                        expecteds.Add((string) step["expected"]);
-                    }
-                    var stepsInString = String.Join(", ", steps.ToArray()).ToLower();
-                    var expectedsInString = String.Join(", ", expecteds.ToArray()).ToLower();
-
-                    var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
-
-                    // Create your new Test Case instance
-                    var testCaseDocument = new TestCase();
-                    testCaseDocument.SetProperties(
-                        (int) testCase["id"],
-                        originalId,
-                        title,
-                        sectionId,
-                        sectionName,
-                        (int?) testCase["milestone_id"],
-                        suiteId,
-                        suiteName,
-                        customCustomStatusId,
-                        customCustomStatusName,
-                        customCustomTestTypeIds,
-                        customCustomTestTypeName,
-                        customCustomTagsIds,
-                        customCustomTagsName,
-                        customAssigneeId,
-                        customAssigneeName,
-                        notes,
-                        preconds,
-                        stepsInString,
-                        expectedsInString,
-                        comments,
-                        (int) testCase["updated_on"]
-                    );
-
                     try
                     {
+                        var originalId = testCase["custom_custom_original_i"].ToString();
+                        var title = testCase["title"].ToString();
+                        var sectionId = (int) testCase["section_id"];
+                        var sectionName = GetSectionName(sectionId);
+                        var suiteId = (int) testCase["suite_id"];
+                        var suiteName = GetSuiteName(suiteId);
+                        var jTokencustomCustomStatusId = testCase["custom_custom_status"];
+                        var customCustomStatusId = -1;
+                        if (jTokencustomCustomStatusId != null)
+                            if (jTokencustomCustomStatusId.Type != JTokenType.Null)
+                                customCustomStatusId = (int)jTokencustomCustomStatusId;
+                        var customCustomStatusName = GetStatusName(customCustomStatusId);
+                        var customCustomTestTypeIds = testCase["custom_custom_test_type"].ToObject<List<int>>();
+                        var customCustomTestTypeName = GetTestTypeName(customCustomTestTypeIds);
+                        var jTokencustomCustomTagsIds = testCase["custom_custom_tags"];
+                        List<int> customCustomTagsIds = new List<int>();
+                        if (jTokencustomCustomTagsIds != null)
+                            if (jTokencustomCustomTagsIds.Type != JTokenType.Null)
+                                customCustomTagsIds = jTokencustomCustomTagsIds.ToObject<List<int>>();
+                        var customCustomTagsName = GetTagName(customCustomTagsIds);
+                        var jTokenAssigneeId = testCase["custom_assignee"];
+                        var customAssigneeId = -1;
+                        if (jTokenAssigneeId != null)
+                            if (jTokenAssigneeId.Type != JTokenType.Null)
+                                customAssigneeId = (int)jTokenAssigneeId;
+                        var customAssigneeName = GetAssigneeName(customAssigneeId);
+                        var notes = testCase["custom_notes"].ToString().ToLower();
+                        var preconds = testCase["custom_preconds"].ToString().ToLower();
+                        var jTokenComments = testCase["custom_custom_comments"];
+                        var comments = "";
+                        if (jTokenComments != null)
+                        {
+                            comments = jTokenComments.ToString().ToLower();
+                        }
+                        var steps = new List<string>();
+                        List<string> expecteds = new List<string>();
+                        foreach (var step in testCase["custom_steps_separated"])
+                        {
+                            steps.Add((string) step["content"]);
+                            expecteds.Add((string) step["expected"]);
+                        }
+                        var stepsInString = String.Join(", ", steps.ToArray()).ToLower();
+                        var expectedsInString = String.Join(", ", expecteds.ToArray()).ToLower();
+
+                        var dbs = new DatabaseServer(DatabaseFilePath, TestCasesCollectionName);
+
+                        // Create your new Test Case instance
+                        var testCaseDocument = new TestCase();
+                        testCaseDocument.SetProperties(
+                            (int) testCase["id"],
+                            originalId,
+                            title,
+                            sectionId,
+                            sectionName,
+                            (int?) testCase["milestone_id"],
+                            suiteId,
+                            suiteName,
+                            customCustomStatusId,
+                            customCustomStatusName,
+                            customCustomTestTypeIds,
+                            customCustomTestTypeName,
+                            customCustomTagsIds,
+                            customCustomTagsName,
+                            customAssigneeId,
+                            customAssigneeName,
+                            notes,
+                            preconds,
+                            stepsInString,
+                            expectedsInString,
+                            comments,
+                            (int) testCase["updated_on"]
+                        );
+                        
                         if (dbs.DocumentExists(TestCasesCollectionName, testCaseDocument.Id))
                         {
                             if (dbs.IsTestCaseUpdatable(testCaseDocument.Id, testCaseDocument.UpdatedOn))
@@ -491,16 +493,34 @@ namespace TestRail_Searcher
                         {
                             dbs.InsertDocument(testCaseDocument);
                         }
+
+                        testCasesCountLbl.Invoke((MethodInvoker)delegate
+                        {
+                            testCasesCountLbl.Text = (++testCasesCount).ToString();
+                        });
                     }
                     catch (Exception ex)
                     {
-                        Program.LogException(ex);
+                        exceptions.Enqueue(ex);
                     }
-                    testCasesCountLbl.Invoke((MethodInvoker) delegate
-                    {
-                        testCasesCountLbl.Text = (++testCasesCount).ToString();
-                    });
                 });
+
+                if (exceptions.Count > 0)
+                {
+                    try
+                    {
+                        throw new AggregateException(exceptions);
+                    }
+                    catch (AggregateException exs)
+                    {
+                        foreach (var ex in exs.InnerExceptions)
+                        {
+                            Program.LogException(ex);
+                        }
+                        MessageBox.Show(@"Cannot update DB properly, see log file.");
+                    }
+                }
+
             });
 
             sw.Stop();
