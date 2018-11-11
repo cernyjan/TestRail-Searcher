@@ -52,10 +52,10 @@ namespace TestRail_Searcher
             int updatedOn)
         {
             Id = id;
-            CustomCustomOriginalId = customCustomOriginalId;
+            CustomCustomOriginalId = string.IsNullOrEmpty(customCustomOriginalId) ? "" : customCustomOriginalId;
             Title = string.IsNullOrEmpty(title) ? "" : title;
             SectionId = sectionId;
-            SectionName = sectionName;
+            SectionName = string.IsNullOrEmpty(sectionName) ? "" : sectionName;
             if (milestoneId == null)
             {
                 MilestoneId = -1;

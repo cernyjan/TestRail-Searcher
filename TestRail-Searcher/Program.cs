@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -11,12 +12,19 @@ namespace TestRail_Searcher
         {
             var workingDirectory = Path.GetDirectoryName(Application.ExecutablePath) ?? "";
             var fileName = "TestRail-Searcher_errors.log";
+
+            StackTrace trace = new StackTrace(e, true);
+            var date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss\t");
+            var name = trace.GetFrame(0).GetMethod().ReflectedType?.FullName;
+            var line = "Line: " + trace.GetFrame(0).GetFileLineNumber();
+            var column = "Column: " + trace.GetFrame(0).GetFileColumnNumber();
+            var row = date + name + "\t" + line + "\t" + column + "\t" + e.Message;
             if (File.Exists(Path.Combine(workingDirectory, fileName)))
             {
                 using (FileStream fs = new FileStream(Path.Combine(workingDirectory, fileName), FileMode.Append))
                 {
                     StreamWriter sw = new StreamWriter(fs);
-                    sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss\t") + e.Message);
+                    sw.WriteLine(row);
                     sw.Close();
                 }
             }
@@ -25,7 +33,7 @@ namespace TestRail_Searcher
                 using (FileStream fs = new FileStream(Path.Combine(workingDirectory, fileName), FileMode.OpenOrCreate))
                 {
                     StreamWriter sw = new StreamWriter(fs);
-                    sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss\t") + e.Message);
+                    sw.WriteLine(row);
                     sw.Close();
                 }
             }
