@@ -33,7 +33,7 @@ namespace TestRail_Searcher
             string title, 
             int sectionId, 
             string sectionName, 
-            int? milestoneId, 
+            int milestoneId, 
             int suiteId, 
             string suiteName, 
             int customCustomStatusId,
@@ -52,18 +52,11 @@ namespace TestRail_Searcher
             int updatedOn)
         {
             Id = id;
-            CustomCustomOriginalId = string.IsNullOrEmpty(customCustomOriginalId) ? "" : customCustomOriginalId;
-            Title = string.IsNullOrEmpty(title) ? "" : title;
+            CustomCustomOriginalId = customCustomOriginalId;
+            Title = title;
             SectionId = sectionId;
-            SectionName = string.IsNullOrEmpty(sectionName) ? "" : sectionName;
-            if (milestoneId == null)
-            {
-                MilestoneId = -1;
-            }
-            else
-            {
-                MilestoneId = (int) milestoneId;
-            }
+            SectionName = sectionName;
+            MilestoneId = milestoneId;
             SuiteId = suiteId;
             SuiteName = suiteName;
             CustomCustomStatusId = customCustomStatusId;
@@ -78,7 +71,7 @@ namespace TestRail_Searcher
             CustomPreconds = string.IsNullOrEmpty(customPreconds) ? "" : customPreconds;
             CustomSteps = string.IsNullOrEmpty(customSteps) ? "" : customSteps;
             CustomExpecteds = string.IsNullOrEmpty(customExpecteds) ? "" : customExpecteds;
-            CustomCustomComments = string.IsNullOrEmpty(customCustomComments) ? "" : customCustomComments;
+            CustomCustomComments = customCustomComments;
             UpdatedOn = updatedOn;
         }
     }
