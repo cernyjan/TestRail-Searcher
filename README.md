@@ -7,6 +7,11 @@ Comparison between native TestRail search and this tool:
 ![TestRail Searcher](TestRail-Searcher.png)
 
 ## Release Notes
+### v1.0.7.0
+* fixed bug: App Crashes
+* improved logging
+* publish as Portable version
+
 ### v1.0.6.1
 * fixed bug: Cannot search in State
 
@@ -35,4 +40,4 @@ Comparison between native TestRail search and this tool:
 * bumped version
 
 ## Download tool
-[TestRail Searcher v1.0.6.1](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.6.1)
+[TestRail Searcher v1.0.7.0](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.7.0)
