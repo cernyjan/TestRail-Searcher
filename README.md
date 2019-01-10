@@ -7,6 +7,9 @@ Comparison between native TestRail search and this tool:
 ![TestRail Searcher](TestRail-Searcher.png)
 
 ## Release Notes
+### v1.0.8.1
+* added location and size of window are saved for next run
+
 ### v1.0.8.0
 * fixed bug: Cannot login by ENTER
 * added support for resize and fullscreen mode
