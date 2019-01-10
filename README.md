@@ -7,6 +7,10 @@ Comparison between native TestRail search and this tool:
 ![TestRail Searcher](TestRail-Searcher.png)
 
 ## Release Notes
+### v1.0.8.0
+* fixed bug: Cannot login by ENTER
+* added support for resize and fullscreen mode
+
 ### v1.0.7.0
 * fixed bug: App Crashes
 * improved logging

@@ -52,6 +52,7 @@
             // 
             // updateBtn
             // 
+            this.updateBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.updateBtn.Location = new System.Drawing.Point(353, 134);
             this.updateBtn.Margin = new System.Windows.Forms.Padding(2);
             this.updateBtn.Name = "updateBtn";
@@ -63,6 +64,8 @@
             // 
             // searchTxt
             // 
+            this.searchTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.searchTxt.Location = new System.Drawing.Point(11, 180);
             this.searchTxt.Margin = new System.Windows.Forms.Padding(2);
             this.searchTxt.Name = "searchTxt";
@@ -71,6 +74,7 @@
             // 
             // searchBtn
             // 
+            this.searchBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.searchBtn.Location = new System.Drawing.Point(353, 178);
             this.searchBtn.Margin = new System.Windows.Forms.Padding(2);
             this.searchBtn.Name = "searchBtn";
@@ -82,6 +86,8 @@
             // 
             // projectsCmb
             // 
+            this.projectsCmb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.projectsCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.projectsCmb.FormattingEnabled = true;
             this.projectsCmb.Location = new System.Drawing.Point(56, 5);
@@ -103,6 +109,8 @@
             // 
             // suitesChckListBox
             // 
+            this.suitesChckListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.suitesChckListBox.FormattingEnabled = true;
             this.suitesChckListBox.Location = new System.Drawing.Point(56, 29);
             this.suitesChckListBox.Margin = new System.Windows.Forms.Padding(2);
@@ -113,6 +121,7 @@
             // 
             // cleanBtn
             // 
+            this.cleanBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cleanBtn.Location = new System.Drawing.Point(286, 134);
             this.cleanBtn.Margin = new System.Windows.Forms.Padding(2);
             this.cleanBtn.Name = "cleanBtn";
@@ -124,6 +133,7 @@
             // 
             // picLoader
             // 
+            this.picLoader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picLoader.BackColor = System.Drawing.Color.Transparent;
             this.picLoader.Image = global::TestRail_Searcher.Properties.Resources.Loadingsome;
             this.picLoader.Location = new System.Drawing.Point(861, 127);
@@ -136,6 +146,7 @@
             // 
             // logoutBtn
             // 
+            this.logoutBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.logoutBtn.Location = new System.Drawing.Point(941, 5);
             this.logoutBtn.Margin = new System.Windows.Forms.Padding(2);
             this.logoutBtn.Name = "logoutBtn";
@@ -147,6 +158,7 @@
             // 
             // loginLabel
             // 
+            this.loginLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.loginLabel.AutoSize = true;
             this.loginLabel.Location = new System.Drawing.Point(730, 10);
             this.loginLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -159,6 +171,9 @@
             this.testCasesDataGridView.AllowUserToAddRows = false;
             this.testCasesDataGridView.AllowUserToDeleteRows = false;
             this.testCasesDataGridView.AllowUserToResizeRows = false;
+            this.testCasesDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.testCasesDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.testCasesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.testCasesDataGridView.Location = new System.Drawing.Point(11, 206);
@@ -193,6 +208,7 @@
             // 
             // ytChbx
             // 
+            this.ytChbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ytChbx.AutoSize = true;
             this.ytChbx.Location = new System.Drawing.Point(457, 182);
             this.ytChbx.Margin = new System.Windows.Forms.Padding(2);
@@ -254,10 +270,9 @@
             this.Controls.Add(this.searchBtn);
             this.Controls.Add(this.searchTxt);
             this.Controls.Add(this.updateBtn);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1024, 600);
             this.Name = "TestRailSearcherForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TestRail - Searcher";
