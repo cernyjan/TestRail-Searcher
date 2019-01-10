@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
+using TestRail_Searcher.Properties;
 
 namespace TestRail_Searcher
 {
@@ -45,7 +46,19 @@ namespace TestRail_Searcher
             {
                 this.Close();
             }
-            
+
+            // Set window location
+            if (Settings.Default.WindowLocation != null)
+            {
+                this.Location = Settings.Default.WindowLocation;
+            }
+
+            // Set window size
+            if (Settings.Default.WindowSize != null)
+            {
+                this.Size = Settings.Default.WindowSize;
+            }
+
             this._server = loginForm.serverTxt.Text;
             this._user = loginForm.loginTxt.Text;
             this._password = loginForm.passwordTxt.Text;
@@ -735,6 +748,25 @@ namespace TestRail_Searcher
         private void ytChbx_CheckedChanged(object sender, EventArgs e)
         {
             _youTrackTestCases = !_youTrackTestCases;
+        }
+
+        private void TestRailSearcherForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Copy window location to app settings
+            Settings.Default.WindowLocation = this.Location;
+
+            // Copy window size to app settings
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            // Save settings
+            Settings.Default.Save();
         }
     }
 }

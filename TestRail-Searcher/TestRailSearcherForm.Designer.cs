@@ -270,12 +270,15 @@
             this.Controls.Add(this.searchBtn);
             this.Controls.Add(this.searchTxt);
             this.Controls.Add(this.updateBtn);
+            this.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::TestRail_Searcher.Properties.Settings.Default, "WindowLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = global::TestRail_Searcher.Properties.Settings.Default.WindowLocation;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(1024, 600);
             this.Name = "TestRailSearcherForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TestRail - Searcher";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TestRailSearcherForm_FormClosing);
             this.Load += new System.EventHandler(this.TestRailSearcher_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picLoader)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.testCasesDataGridView)).EndInit();
