@@ -31,6 +31,7 @@ namespace TestRail_Searcher
                     this._testCaseCollection.EnsureIndex(x => x.SuiteName, "LOWER($.SuiteName)");
                     this._testCaseCollection.EnsureIndex(x => x.CustomCustomStatusName, "LOWER($.CustomCustomStatusName)");
                     this._testCaseCollection.EnsureIndex(x => x.CustomCustomTestTypeName, "LOWER($.CustomCustomTestTypeName)");
+                    this._testCaseCollection.EnsureIndex(x => x.TypeName, "LOWER($.TypeName)");
                     this._testCaseCollection.EnsureIndex(x => x.CustomCustomTagsName, "LOWER($.CustomCustomTagsName)");
                     this._testCaseCollection.EnsureIndex(x => x.CustomAssigneeName, "LOWER($.CustomAssigneeName)");
                     break;
@@ -121,6 +122,7 @@ namespace TestRail_Searcher
                         || x.SuiteName.Contains(keyword)
                         || x.SectionName.Contains(keyword)
                         || x.CustomCustomTestTypeName.Contains(keyword)
+                        || x.TypeName.Contains(keyword)
                         || x.CustomCustomTagsName.Contains(keyword)
                         || x.CustomCustomStatusName.Contains(keyword)
                         || x.CustomAssigneeName.Contains(keyword)
@@ -143,6 +145,7 @@ namespace TestRail_Searcher
                         || keywords.Any(k => testCase.SuiteName.Contains(k))
                         || keywords.Any(k => testCase.SectionName.Contains(k))
                         || keywords.Any(k => testCase.CustomCustomTestTypeName.Contains(k))
+                        || keywords.Any(k => testCase.TypeName.Contains(k))
                         || keywords.Any(k => testCase.CustomCustomTagsName.Contains(k))
                         || keywords.Any(k => testCase.CustomCustomStatusName.Contains(k))
                         || keywords.Any(k => testCase.CustomAssigneeName.Contains(k))

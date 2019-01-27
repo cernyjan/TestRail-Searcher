@@ -30,7 +30,9 @@ namespace TestRail_Searcher
         protected Dictionary<int, List<string>> Sections = new Dictionary<int, List<string>>();
         protected Dictionary<int, string> Assignees = new Dictionary<int, string>();
         JArray _caseFields;
+        JArray _caseTypes;
         readonly Dictionary<int, string> _statuses = new Dictionary<int, string>();
+        readonly Dictionary<int, string> _types = new Dictionary<int, string>();
         readonly Dictionary<int, string> _testTypes = new Dictionary<int, string>();
         readonly Dictionary<int, string> _tags = new Dictionary<int, string>();
         
@@ -69,6 +71,7 @@ namespace TestRail_Searcher
 
             _trr = new TestRailReader(this._server, this._user, this._password);
             _caseFields = _trr.GetCaseFields();
+            _caseTypes = _trr.GetCaseTypes();
             GetAssignees();
 
             var projects = _trr.GetProjects();
@@ -92,6 +95,7 @@ namespace TestRail_Searcher
                     FillSuites();
                     GetSections();
                     GetStatusesAndTestTypesAndTags();
+                    GetTypes();
                     SetLoading(false);
                     break;
                 }
@@ -104,11 +108,12 @@ namespace TestRail_Searcher
             testCasesDataGridView.Columns.Add("Title", "Title");
             testCasesDataGridView.Columns.Add("Original ID", "Original ID");
             testCasesDataGridView.Columns.Add("Test Type", "Test Type");
+            testCasesDataGridView.Columns.Add("Type", "Type");
             testCasesDataGridView.Columns.Add("Tags", "Tags");
             testCasesDataGridView.Columns.Add("Status", "Status");
             testCasesDataGridView.Columns.Add("Assignee", "Assignee");
 
-            this.Text = Program.VersionLabel;
+            this.Text = Program.VersionLabel + "u";
             loginForm.Close();
         }
 
@@ -246,6 +251,23 @@ namespace TestRail_Searcher
                 }
             }
         }
+        private void GetTypes()
+        {
+            _types.Clear();
+            foreach (JObject content in _caseTypes.Children<JObject>())
+            {
+                try
+                {
+                    var id = content.Properties().ToList()[0].Value;
+                    var name = content.Properties().ToList()[1].Value;
+                    _types.Add(Convert.ToInt32(id), name.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Program.LogException(ex);
+                }
+            }
+        }
 
         private void GetAssignees()
         {
@@ -263,6 +285,7 @@ namespace TestRail_Searcher
             FillSuites();
             GetSections();
             GetStatusesAndTestTypesAndTags();
+            GetTypes();
             SetLoading(false);
         }
 
@@ -336,6 +359,15 @@ namespace TestRail_Searcher
         private string GetSuiteName(int suiteId)
         {
             return Suites[suiteId];
+        }
+
+        private string GetTypeName(int typeId)
+        {
+            if (typeId > -1)
+            {
+                return _types[typeId];
+            }
+            return "";
         }
 
         private string GetSectionName(int sectionId)
@@ -423,6 +455,12 @@ namespace TestRail_Searcher
                     try
                     {
                         var id = (int)testCase["id"];
+                        var typeId = -1;
+                        var jTokenTypeId = testCase["type_id"];
+                        if (jTokenTypeId != null)
+                            if (jTokenTypeId.Type != JTokenType.Null)
+                                typeId = (int)jTokenTypeId;
+                        var typeName = GetTypeName(typeId);
                         var customOriginalId = "";
                         var jTokenCustomOriginalId = testCase["custom_custom_original_id"];
                         if (jTokenCustomOriginalId != null)
@@ -499,6 +537,8 @@ namespace TestRail_Searcher
                         var testCaseDocument = new TestCase();
                         testCaseDocument.SetProperties(
                             id,
+                            typeId,
+                            typeName,
                             customOriginalId,
                             title,
                             sectionId,
@@ -622,6 +662,7 @@ namespace TestRail_Searcher
                         testCase.Title,
                         testCase.CustomCustomOriginalId,
                         testCase.CustomCustomTestTypeName,
+                        testCase.TypeName,
                         testCase.CustomCustomTagsName,
                         testCase.CustomCustomStatusName,
                         testCase.CustomAssigneeName

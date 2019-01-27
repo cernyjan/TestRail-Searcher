@@ -15,7 +15,7 @@ namespace TestRail_Searcher
 
         private void PasswordForm_Load(object sender, EventArgs e)
         {
-            this.Text = Program.VersionLabel;
+            this.Text = Program.VersionLabel + "u";
 
             var administrator = _dbs.GetAdmin();
             if (administrator != null)

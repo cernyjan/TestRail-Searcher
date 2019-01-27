@@ -59,6 +59,12 @@ namespace TestRail_Searcher
             return c;
         }
 
+        public JArray GetCaseTypes()
+        {
+            JArray c = (JArray)this._client.SendGet("get_case_types");
+            return c;
+        }
+
         public JArray GetUsers()
         {
             JArray c = (JArray)this._client.SendGet("get_users");

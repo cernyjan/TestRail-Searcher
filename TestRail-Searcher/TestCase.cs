@@ -5,6 +5,8 @@ namespace TestRail_Searcher
     class TestCase
     {
         public int Id { get; set; }
+        public int TypeId { get; set; }
+        public string TypeName { get; set; }
         public string CustomCustomOriginalId { get; set; }
         public string Title { get; set; }
         public int SectionId { get; set; }
@@ -29,6 +31,8 @@ namespace TestRail_Searcher
 
         public void SetProperties(
             int id, 
+            int typeId,
+            string typeName,
             string customCustomOriginalId, 
             string title, 
             int sectionId, 
@@ -52,6 +56,8 @@ namespace TestRail_Searcher
             int updatedOn)
         {
             Id = id;
+            TypeId = typeId;
+            TypeName = typeName;
             CustomCustomOriginalId = customCustomOriginalId;
             Title = title;
             SectionId = sectionId;
