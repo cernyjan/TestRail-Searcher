@@ -768,5 +768,29 @@ namespace TestRail_Searcher
             // Save settings
             Settings.Default.Save();
         }
+
+        private void Copy_btn_Click(object sender, EventArgs e)
+        {
+            if (ProjectId != -1 && testCasesDataGridView.SelectedRows.Count == 1)
+            {
+                try
+                {
+                    Clipboard.SetText("[" + testCasesDataGridView.SelectedRows[0].Cells[4].FormattedValue +
+                                      " " +
+                                      testCasesDataGridView.SelectedRows[0].Cells[3].FormattedValue + "]" +
+                                      "(https://testrail.quadient.group/index.php?/cases/view/" +
+                                      testCasesDataGridView.SelectedRows[0].Cells[1].FormattedValue + ")");
+                }
+                catch (Exception ex)
+                {
+                    Program.LogException(ex);
+                    MessageBox.Show(@"Cannot complete action, see log file.");
+                }
+            }
+            else
+            {
+                MessageBox.Show(@"Please select a project, suite and a row.");
+            }
+        }
     }
 }

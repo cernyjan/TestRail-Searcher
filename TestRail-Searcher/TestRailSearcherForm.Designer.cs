@@ -46,6 +46,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.foundTestCasesCountLbl = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.copy_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picLoader)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.testCasesDataGridView)).BeginInit();
             this.SuspendLayout();
@@ -248,11 +249,24 @@
             this.label2.TabIndex = 18;
             this.label2.Text = "Suites:";
             // 
+            // copy_btn
+            // 
+            this.copy_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.copy_btn.Location = new System.Drawing.Point(677, 178);
+            this.copy_btn.Margin = new System.Windows.Forms.Padding(2);
+            this.copy_btn.Name = "copy_btn";
+            this.copy_btn.Size = new System.Drawing.Size(137, 24);
+            this.copy_btn.TabIndex = 19;
+            this.copy_btn.Text = "Copy for YouTrack";
+            this.copy_btn.UseVisualStyleBackColor = true;
+            this.copy_btn.Click += new System.EventHandler(this.Copy_btn_Click);
+            // 
             // TestRailSearcherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 561);
+            this.Controls.Add(this.copy_btn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.foundTestCasesCountLbl);
             this.Controls.Add(this.label4);
@@ -306,6 +320,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label foundTestCasesCountLbl;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button copy_btn;
     }
 }
 
