@@ -11,7 +11,11 @@ Comparison between native TestRail search and this tool:
 [Manual for TestRail Searcher](https://github.com/cernyjan/TestRail-Searcher/wiki)
 
 ## Download tool
-[TestRail Searcher v1.0.8.1](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.8.1)
+[TestRail Searcher v1.0.8.2](https://github.com/cernyjan/TestRail-Searcher/releases/tag/v1.0.8.2)
+
+## Release Notes
+### v1.0.8.2
+* fixed bug: cannot login, when login email is different against AD
 
 ## Release Notes
 ### v1.0.8.1

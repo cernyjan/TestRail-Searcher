@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace TestRail_Searcher
@@ -29,7 +31,19 @@ namespace TestRail_Searcher
         {
             loginProgressBar.Visible = true;
             var trr = new TestRailReader(serverTxt.Text, loginTxt.Text, passwordTxt.Text);
-            if (trr.TryLogin())
+            bool accessGranted;
+
+            var domain = "@neopost.com";
+            if (loginTxt.Text.Substring(loginTxt.Text.Length - domain.Length, domain.Length).Equals(domain))
+            {
+                accessGranted = trr.TryLogin(domain);
+            }
+            else
+            {
+                accessGranted = trr.TryLogin();
+            }
+
+            if (accessGranted)
             {
                 this.DialogResult = DialogResult.OK;
 

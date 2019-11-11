@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Gurock.TestRail;
 using Newtonsoft.Json.Linq;
 
@@ -15,11 +16,21 @@ namespace TestRail_Searcher
             _client.Password = password;
         }
 
-        public bool TryLogin()
+        public bool TryLogin(string domain = "")
         {
+            var email = _client.User;
             try
             {
-                JObject c = (JObject)this._client.SendGet("get_user_by_email&email=" + _client.User);
+                JObject c;
+                if (domain.Equals(string.Empty))
+                {
+                    c = (JObject)this._client.SendGet("get_user_by_email&email=" + email);
+                }
+                else
+                {
+                    c = (JObject)this._client.SendGet("get_user_by_email&email=" + email.Replace(domain, "@quadient.com"));
+                }
+                
                 Console.WriteLine(c["email"]);
                 return true;
             }
