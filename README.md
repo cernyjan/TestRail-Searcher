@@ -17,7 +17,6 @@ Comparison between native TestRail search and this tool:
 ### v1.0.8.2
 * fixed bug: cannot login, when login email is different against AD
 
-## Release Notes
 ### v1.0.8.1
 * added location and size of window are saved for next run
 
